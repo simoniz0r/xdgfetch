@@ -1,7 +1,7 @@
 #!/bin/bash
 # A script that uses 'xdg-mime' to fetch the default apps on the system.
 # Dependencies: 'xdg-mime', 'xdg-settings'
-# Written by simonizor 5/27/2017 - http://www.simonizor.gq/scripts
+# Written by simonizor 5/27/2017 - http://www.simonizor.gq/linuxapps
 
 bold=$(tput bold; tput setaf 7)
 norm=$(tput sgr0)
