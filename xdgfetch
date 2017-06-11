@@ -30,32 +30,8 @@ xdgfetchmain () {
             ;;
         -c*|--c*)
             case $2 in
-                1)
-                    bold=$(tput bold; tput setaf 1)
-                    xdgfetchmain "$3"
-                    ;;
-                2)
-                    bold=$(tput bold; tput setaf 2)
-                    xdgfetchmain "$3"
-                    ;;
-                3)
-                    bold=$(tput bold; tput setaf 3)
-                    xdgfetchmain "$3"
-                    ;;
-                4)
-                    bold=$(tput bold; tput setaf 4)
-                    xdgfetchmain "$3"
-                    ;;
-                5)
-                    bold=$(tput bold; tput setaf 5)
-                    xdgfetchmain "$3"
-                    ;;
-                6)
-                    bold=$(tput bold; tput setaf 6)
-                    xdgfetchmain "$3"
-                    ;;
                 *)
-                    bold=$(tput bold; tput setaf 7)
+                    bold=$(tput bold; tput setaf $2)
                     xdgfetchmain "$3"
                     ;;
             esac
@@ -307,32 +283,8 @@ if [ "$return" = "1" ]; then
     if [ "$return" = "1" ]; then
     if [ ! -z "$2" ]; then
             case $3 in
-                1)
-                    bold=$(tput bold; tput setaf 1)
-                    xdgfetchmain "$1"
-                    ;;
-                2)
-                    bold=$(tput bold; tput setaf 2)
-                    xdgfetchmain "$1"
-                    ;;
-                3)
-                    bold=$(tput bold; tput setaf 3)
-                    xdgfetchmain "$1"
-                    ;;
-                4)
-                    bold=$(tput bold; tput setaf 4)
-                    xdgfetchmain "$1"
-                    ;;
-                5)
-                    bold=$(tput bold; tput setaf 5)
-                    xdgfetchmain "$1"
-                    ;;
-                6)
-                    bold=$(tput bold; tput setaf 6)
-                    xdgfetchmain "$1"
-                    ;;
                 *)
-                    bold=$(tput bold; tput setaf 7)
+                    bold=$(tput bold; tput setaf $3)
                     xdgfetchmain "$@"
                     ;;
             esac
