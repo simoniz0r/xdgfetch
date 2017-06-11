@@ -175,6 +175,9 @@ xdgfetchmain () {
                 *geany*|*Geany*)
                     echo "${bold}Text:    ${norm}Geany"
                     ;;
+                *kwrite*|*KWrite*)
+                    echo "${bold}Text:    ${norm}KWrite"
+                    ;;
                 *)
                     echo "${bold}Text:    ${norm}${XDGTEXT::-8}"
                     ;;
@@ -286,6 +289,9 @@ xdgfetchmain () {
                     ;;
                 *geany*|*Geany*)
                     echo "${bold}Text:    ${norm}Geany"
+                    ;;
+                *kwrite*|*KWrite*)
+                    echo "${bold}Text:    ${norm}KWrite"
                     ;;
                 *)
                     echo "${bold}Text:    ${norm}${XDGTEXT::-8}"
