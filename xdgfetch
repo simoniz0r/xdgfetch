@@ -18,6 +18,7 @@ xdgfetchmain () {
             echo
             echo "${bold}xdgfetch${norm}   : Shows default xdg-mime applications"
             echo "${bold}xdgfetch -h${norm}: Shows this help output"
+            echo "${bold}xdgfetch -x${norm}: Shows default xdg applications in xdg syntax."
             echo "${bold}xdgfetch -c${norm}: Changes the color of bold text.  Works with any valid tput color."
             echo "  Ex: 'xdgfetch -c 1', 'xdgfetch -c 1 -b'"
             echo "${bold}xdgfetch -b${norm}: Shows default xdg browser"
@@ -182,6 +183,25 @@ xdgfetchmain () {
                     echo "${bold}Text:  ${norm}${XDGTEXT::-8}"
                     ;;
             esac
+            ;;
+        -x*|--x*)
+            echo "${bold}Default xdg applications:${norm}"
+            echo
+            XDGFILEMANAGER="$(xdg-mime query default inode/directory)" || XDGFILEMANAGER="Not set!        "
+            echo "${bold}inode/directory:          ${norm}$XDGFILEMANAGER"
+            XDGBROWSER="$(xdg-settings get default-web-browser)" || XDGBROWSER="Not set!        "
+            echo "${bold}default-web-browser:      ${norm}$XDGBROWSER"
+            XDGMAILTO="$(xdg-mime query default x-scheme-handler/mailto)" || XDGMAILTO="Not set!        "
+            echo "${bold}x-scheme-handler/mailto:  ${norm}$XDGMAILTO"
+            XDGAUDIO="$(xdg-mime query default audio/flac)" || XDGAUDIO="Not set!        "
+            echo "${bold}audio/flac:               ${norm}$XDGAUDIO"
+            XDGVIDEO="$(xdg-mime query default video/mp4)" || XDGVIDEO="Not set!        "
+            echo "${bold}video/mp4:                ${norm}$XDGVIDEO"
+            XDGIMAGE="$(xdg-mime query default image/png)" || XDGIMAGE="Not set!        "
+            echo "${bold}image/png:                ${norm}$XDGIMAGE"
+            XDGTEXT="$(xdg-mime query default text/plain)" || XDGTEXT="Not set!        "
+            echo "${bold}text/plain:               ${norm}$XDGTEXT"
+            echo
             ;;
         *)
             echo "${bold}Default xdg applications:${norm}"
