@@ -18,7 +18,7 @@ xdgfetchmain () {
             echo
             echo "${bold}xdgfetch${norm}   : Shows default xdg-mime applications"
             echo "${bold}xdgfetch -h${norm}: Shows this help output"
-            echo "${bold}xdgfetch -c${norm}: Changes the color of bold text. Options 1-6."
+            echo "${bold}xdgfetch -c${norm}: Changes the color of bold text.  Works with any valid tput color."
             echo "  Ex: 'xdgfetch -c 1', 'xdgfetch -c 1 -b'"
             echo "${bold}xdgfetch -b${norm}: Shows default xdg browser"
             echo "${bold}xdgfetch -m${norm}: Shows default xdg email app"
