@@ -30,8 +30,8 @@ xdgfetchmain () {
             ;;
         -c*|--c*)
             case $2 in
-                [1-500])
-                    bold=$(tput bold; tput setaf "$2")
+                0*|1*|2*|3*|4*|5*|6*|7*|8*|9*)
+                    bold=$(tput bold; tput setaf $2)
                     xdgfetchmain "$3"
                     ;;
                 *)
@@ -286,7 +286,7 @@ if [ "$return" = "1" ]; then
     if [ "$return" = "1" ]; then
     if [ ! -z "$2" ]; then
             case $3 in
-                [1-500])
+                0*|1*|2*|3*|4*|5*|6*|7*|8*|9*)
                     bold=$(tput bold; tput setaf $3)
                     xdgfetchmain "$@"
                     ;;
