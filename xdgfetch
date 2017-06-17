@@ -40,23 +40,43 @@ xdgfetchmain () {
                     ;;
             esac
             ;;
+        -f*|--f*)
+            XDGFILEMANAGER="$(xdg-mime query default inode/directory)" || XDGFILEMANAGER="Not set!        "
+            case $XDGFILEMANAGER in
+                *dolphin*|*Dolphin*)
+                    echo "${bold}File Manager:  ${norm}Dolphin"
+                    ;;
+                *thunar*|*Thunar*)
+                    echo "${bold}File Manager:  ${norm}Thunar"
+                    ;;
+                *pcmanfm*|*PCManFM*)
+                    echo "${bold}File Manager:  ${norm}PCManFM"
+                    ;;
+                *ranger*|*Ranger*)
+                    echo "${bold}File Manager:  ${norm}ranger"
+                    ;;
+                *)
+                    echo "${bold}File Manager:  ${norm}${XDGFILEMANAGER::-8}"
+                    ;;
+            esac
+            ;;
         -b*|--b*)
             XDGBROWSER="$(xdg-settings get default-web-browser)" || XDGBROWSER="Not set!        "
             case $XDGBROWSER in
                 *Pale*|*pale*)
-                    echo "${bold}Browser: ${norm}Pale Moon"
+                    echo "${bold}Browser:  ${norm}Pale Moon"
                     ;;
                 *firefox*)
-                    echo "${bold}Browser: ${norm}Firefox"
+                    echo "${bold}Browser:  ${norm}Firefox"
                     ;;
                 *google*)
-                    echo "${bold}Browser: ${norm}Google Chrome"
+                    echo "${bold}Browser:  ${norm}Google Chrome"
                     ;;
                 *chromium*)
-                    echo "${bold}Browser: ${norm}Chromium"
+                    echo "${bold}Browser:  ${norm}Chromium"
                     ;;
                 *)
-                    echo "${bold}Browser: ${norm}${XDGBROWSER::-8}"
+                    echo "${bold}Browser:  ${norm}${XDGBROWSER::-8}"
                     ;;
             esac
             ;;
@@ -64,13 +84,13 @@ xdgfetchmain () {
             XDGMAILTO="$(xdg-mime query default x-scheme-handler/mailto)" || XDGMAILTO="Not set!        "
             case $XDGMAILTO in
                 *thunderbird*|*Thunderbird*)
-                    echo "${bold}Email:   ${norm}Thunderbird"
+                    echo "${bold}Email:  ${norm}Thunderbird"
                     ;;
                 *kmail*)
-                    echo "${bold}Email:   ${norm}KMail"
+                    echo "${bold}Email:  ${norm}KMail"
                     ;;
                 *)
-                    echo "${bold}Email:   ${norm}${XDGMAILTO::-8}"
+                    echo "${bold}Email:  ${norm}${XDGMAILTO::-8}"
                     ;;
             esac
             ;;
@@ -78,22 +98,22 @@ xdgfetchmain () {
             XDGAUDIO="$(xdg-mime query default audio/flac)" || XDGAUDIO="Not set!        "
             case $XDGAUDIO in
                 *audacious*|*Audacious*)
-                    echo "${bold}Audio:   ${norm}Audacious"
+                    echo "${bold}Audio:  ${norm}Audacious"
                     ;;
                 *mpv*)
-                    echo "${bold}Audio:   ${norm}mpv"
+                    echo "${bold}Audio:  ${norm}mpv"
                     ;;
                 *vlc*|*VLC*)
-                    echo "${bold}Audio:   ${norm}VLC"
+                    echo "${bold}Audio:  ${norm}VLC"
                     ;;
                 *amarok*|*Amarok*)
-                    echo "${bold}Audio:   ${norm}Amarok"
+                    echo "${bold}Audio:  ${norm}Amarok"
                     ;;
                 *deadbeef*)
-                    echo "${bold}Audio:   ${norm}DeaDBeeF"
+                    echo "${bold}Audio:  ${norm}DeaDBeeF"
                     ;;
                 *)
-                    echo "${bold}Audio:   ${norm}${XDGAUDIO::-8}"
+                    echo "${bold}Audio:  ${norm}${XDGAUDIO::-8}"
                     ;;
             esac
             ;;
@@ -101,16 +121,16 @@ xdgfetchmain () {
             XDGVIDEO="$(xdg-mime query default video/mp4)" || XDGVIDEO="Not set!        "
             case $XDGVIDEO in
                 *mpv*)
-                    echo "${bold}Video:   ${norm}mpv"
+                    echo "${bold}Video:  ${norm}mpv"
                     ;;
                 *vlc*|*VLC*)
-                    echo "${bold}Video:   ${norm}VLC"
+                    echo "${bold}Video:  ${norm}VLC"
                     ;;
                 *mplayer*)
-                    echo "${bold}Video:   ${norm}Mplayer"
+                    echo "${bold}Video:  ${norm}Mplayer"
                     ;;
                 *)
-                    echo "${bold}Video:   ${norm}${XDGVIDEO::-8}"
+                    echo "${bold}Video:  ${norm}${XDGVIDEO::-8}"
                     ;;
             esac
             ;;
@@ -118,19 +138,19 @@ xdgfetchmain () {
             XDGIMAGE="$(xdg-mime query default image/png)" || XDGIMAGE="Not set!        "
             case $XDGIMAGE in
                 *gwenview*|*Gwenview*)
-                    echo "${bold}Image:   ${norm}Gwenview"
+                    echo "${bold}Image:  ${norm}Gwenview"
                     ;;
                 *gimp*|*Gimp*|*GIMP*)
-                    echo "${bold}Image:   ${norm}GIMP"
+                    echo "${bold}Image:  ${norm}GIMP"
                     ;;
                 *krita*|*Krita*)
-                    echo "${bold}Image:   ${norm}Krita"
+                    echo "${bold}Image:  ${norm}Krita"
                     ;;
                 *mtpaint*)
-                    echo "${bold}Image:   ${norm}mtpaint"
+                    echo "${bold}Image:  ${norm}mtpaint"
                     ;;
                 *)
-                    echo "${bold}Image:   ${norm}${XDGIMAGE::-8}"
+                    echo "${bold}Image:  ${norm}${XDGIMAGE::-8}"
                     ;;
             esac
             ;;
@@ -138,143 +158,161 @@ xdgfetchmain () {
             XDGTEXT="$(xdg-mime query default text/plain)"  || XDGTEXT="Not set!        "
             case $XDGTEXT in
                 *code*)
-                    echo "${bold}Text:    ${norm}VSCode"
+                    echo "${bold}Text:  ${norm}VSCode"
                     ;;
                 *atom*|*Atom*)
-                    echo "${bold}Text:    ${norm}Atom"
+                    echo "${bold}Text:  ${norm}Atom"
                     ;;
                 *gedit*|*Gedit*)
-                    echo "${bold}Text:    ${norm}gedit"
+                    echo "${bold}Text:  ${norm}gedit"
                     ;;
                 *mousepad*|*Mousepad*)
-                    echo "${bold}Text:    ${norm}Mousepad"
+                    echo "${bold}Text:  ${norm}Mousepad"
                     ;;
                 *notepadqq*|*Notepadqq*)
-                    echo "${bold}Text:    ${norm}notepadqq"
+                    echo "${bold}Text:  ${norm}notepadqq"
                     ;;
                 *geany*|*Geany*)
-                    echo "${bold}Text:    ${norm}Geany"
+                    echo "${bold}Text:  ${norm}Geany"
                     ;;
                 *kwrite*|*KWrite*)
-                    echo "${bold}Text:    ${norm}KWrite"
+                    echo "${bold}Text:  ${norm}KWrite"
                     ;;
                 *)
-                    echo "${bold}Text:    ${norm}${XDGTEXT::-8}"
+                    echo "${bold}Text:  ${norm}${XDGTEXT::-8}"
                     ;;
             esac
             ;;
         *)
             echo "${bold}Default xdg applications:${norm}"
-            XDGBROWSER="$(xdg-settings get default-web-browser)" || XDGBROWSER="Not set!        "
+            XDGFILEMANAGER="$(xdg-mime query default inode/directory)" || XDGFILEMANAGER="Not set!        "
             echo
-            case $XDGBROWSER in
-                *Pale*|*pale*)
-                    echo "${bold}Browser: ${norm}Pale Moon"
+            case $XDGFILEMANAGER in
+                *dolphin*|*Dolphin*)
+                    echo "${bold}File Manager:  ${norm}Dolphin"
                     ;;
-                *firefox*)
-                    echo "${bold}Browser: ${norm}Firefox"
+                *thunar*|*Thunar*)
+                    echo "${bold}File Manager:  ${norm}Thunar"
                     ;;
-                *google*)
-                    echo "${bold}Browser: ${norm}Google Chrome"
+                *pcmanfm*|*PCManFM*)
+                    echo "${bold}File Manager:  ${norm}PCManFM"
                     ;;
-                *chromium*)
-                    echo "${bold}Browser: ${norm}Chromium"
+                *ranger*|*Ranger*)
+                    echo "${bold}File Manager:  ${norm}ranger"
                     ;;
                 *)
-                    echo "${bold}Browser: ${norm}${XDGBROWSER::-8}"
+                    echo "${bold}File Manager:  ${norm}${XDGFILEMANAGER::-8}"
+                    ;;
+            esac
+            XDGBROWSER="$(xdg-settings get default-web-browser)" || XDGBROWSER="Not set!        "
+            case $XDGBROWSER in
+                *Pale*|*pale*)
+                    echo "${bold}Browser:       ${norm}Pale Moon"
+                    ;;
+                *firefox*)
+                    echo "${bold}Browser:       ${norm}Firefox"
+                    ;;
+                *google*)
+                    echo "${bold}Browser:       ${norm}Google Chrome"
+                    ;;
+                *chromium*)
+                    echo "${bold}Browser:       ${norm}Chromium"
+                    ;;
+                *)
+                    echo "${bold}Browser:       ${norm}${XDGBROWSER::-8}"
                     ;;
             esac
             XDGMAILTO="$(xdg-mime query default x-scheme-handler/mailto)" || XDGMAILTO="Not set!        "
             case $XDGMAILTO in
                 *thunderbird*|*Thunderbird*)
-                    echo "${bold}Email:   ${norm}Thunderbird"
+                    echo "${bold}Email:         ${norm}Thunderbird"
                     ;;
                 *kmail*)
-                    echo "${bold}Email:   ${norm}KMail"
+                    echo "${bold}Email:         ${norm}KMail"
                     ;;
                 *)
-                    echo "${bold}Email:   ${norm}${XDGMAILTO::-8}"
+                    echo "${bold}Email:         ${norm}${XDGMAILTO::-8}"
                     ;;
             esac
             XDGAUDIO="$(xdg-mime query default audio/flac)" || XDGAUDIO="Not set!        "
             case $XDGAUDIO in
                 *audacious*|*Audacious*)
-                    echo "${bold}Audio:   ${norm}Audacious"
+                    echo "${bold}Audio:         ${norm}Audacious"
                     ;;
                 *mpv*)
-                    echo "${bold}Audio:   ${norm}mpv"
+                    echo "${bold}Audio:         ${norm}mpv"
                     ;;
                 *vlc*|*VLC*)
-                    echo "${bold}Audio:   ${norm}VLC"
+                    echo "${bold}Audio:         ${norm}VLC"
                     ;;
                 *amarok*|*Amarok*)
-                    echo "${bold}Audio:   ${norm}Amarok"
+                    echo "${bold}Audio:         ${norm}Amarok"
                     ;;
                 *deadbeef*)
-                    echo "${bold}Audio:   ${norm}DeaDBeeF"
+                    echo "${bold}Audio:         ${norm}DeaDBeeF"
                     ;;
                 *)
-                    echo "${bold}Audio:   ${norm}${XDGAUDIO::-8}"
+                    echo "${bold}Audio:         ${norm}${XDGAUDIO::-8}"
                     ;;
             esac
             XDGVIDEO="$(xdg-mime query default video/mp4)" || XDGVIDEO="Not set!        "
             case $XDGVIDEO in
                 *mpv*)
-                    echo "${bold}Video:   ${norm}mpv"
+                    echo "${bold}Video:         ${norm}mpv"
                     ;;
                 *vlc*|*VLC*)
-                    echo "${bold}Video:   ${norm}VLC"
+                    echo "${bold}Video:         ${norm}VLC"
                     ;;
                 *mplayer*)
-                    echo "${bold}Video:   ${norm}Mplayer"
+                    echo "${bold}Video:         ${norm}Mplayer"
                     ;;
                 *)
-                    echo "${bold}Video:   ${norm}${XDGVIDEO::-8}"
+                    echo "${bold}Video:         ${norm}${XDGVIDEO::-8}"
                     ;;
             esac
             XDGIMAGE="$(xdg-mime query default image/png)" || XDGIMAGE="Not set!        "
             case $XDGIMAGE in
                 *gwenview*|*Gwenview*)
-                    echo "${bold}Image:   ${norm}Gwenview"
+                    echo "${bold}Image:         ${norm}Gwenview"
                     ;;
                 *gimp*|*Gimp*|*GIMP*)
-                    echo "${bold}Image:   ${norm}GIMP"
+                    echo "${bold}Image:         ${norm}GIMP"
                     ;;
                 *krita*|*Krita*)
-                    echo "${bold}Image:   ${norm}Krita"
+                    echo "${bold}Image:         ${norm}Krita"
                     ;;
                 *mtpaint*)
-                    echo "${bold}Image:   ${norm}mtpaint"
+                    echo "${bold}Image:         ${norm}mtpaint"
                     ;;
                 *)
-                    echo "${bold}Image:   ${norm}${XDGIMAGE::-8}"
+                    echo "${bold}Image:         ${norm}${XDGIMAGE::-8}"
                     ;;
             esac
             XDGTEXT="$(xdg-mime query default text/plain)" || XDGTEXT="Not set!        "
             case $XDGTEXT in
                 *code*)
-                    echo "${bold}Text:    ${norm}VSCode"
+                    echo "${bold}Text:          ${norm}VSCode"
                     ;;
                 *atom*|*Atom*)
-                    echo "${bold}Text:    ${norm}Atom"
+                    echo "${bold}Text:          ${norm}Atom"
                     ;;
                 *gedit*|*Gedit*)
-                    echo "${bold}Text:    ${norm}gedit"
+                    echo "${bold}Text:          ${norm}gedit"
                     ;;
                 *mousepad*|*Mousepad*)
-                    echo "${bold}Text:    ${norm}Mousepad"
+                    echo "${bold}Text:          ${norm}Mousepad"
                     ;;
                 *notepadqq*|*Notepadqq*)
-                    echo "${bold}Text:    ${norm}notepadqq"
+                    echo "${bold}Text:          ${norm}notepadqq"
                     ;;
                 *geany*|*Geany*)
-                    echo "${bold}Text:    ${norm}Geany"
+                    echo "${bold}Text:          ${norm}Geany"
                     ;;
                 *kwrite*|*KWrite*)
-                    echo "${bold}Text:    ${norm}KWrite"
+                    echo "${bold}Text:          ${norm}KWrite"
                     ;;
                 *)
-                    echo "${bold}Text:    ${norm}${XDGTEXT::-8}"
+                    echo "${bold}Text:          ${norm}${XDGTEXT::-8}"
                     ;;
             esac
             echo
