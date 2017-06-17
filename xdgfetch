@@ -35,7 +35,8 @@ xdgfetchmain () {
                     xdgfetchmain "$3"
                     ;;
                 *)
-                    xdgfetchmain "$3"
+                    echo "Invalid color choice."
+                    exit 1
                     ;;
             esac
             ;;
