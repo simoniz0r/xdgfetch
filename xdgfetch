@@ -7,8 +7,7 @@ bold=$(tput bold; tput setaf 7)
 norm=$(tput sgr0)
 
 programisinstalled () {
-  return=1
-  type "$1" >/dev/null 2>&1 || { return=0; }
+    type "$1" >/dev/null 2>&1
 }
 
 xdgfetchmain () {
@@ -339,28 +338,18 @@ xdgfetchmain () {
     esac
 }
 
-programisinstalled "xdg-mime"
-if [ "$return" = "1" ]; then
-    programisinstalled "xdg-settings"
-    if [ "$return" = "1" ]; then
-    if [ ! -z "$2" ]; then
-            case $3 in
-                0*|1*|2*|3*|4*|5*|6*|7*|8*|9*)
-                    bold=$(tput bold; tput setaf $3)
-                    xdgfetchmain "$@"
-                    ;;
-                *)
-                    xdgfetchmain "$@"
-                    ;;
-            esac
-        else
+programisinstalled "xdg-mime" || { echo "xdg-mime is not installed!"; exit 1; }
+programisinstalled "xdg-settings" || { echo "xdg-settings is not installed!"; exit 1; }
+if [ ! -z "$2" ]; then
+    case $3 in
+        0*|1*|2*|3*|4*|5*|6*|7*|8*|9*)
+            bold=$(tput bold; tput setaf $3)
             xdgfetchmain "$@"
-        fi
-    else
-        echo "xdg-settings is not installed!"
-        exit 0
-    fi
+            ;;
+        *)
+            xdgfetchmain "$@"
+            ;;
+    esac
 else
-    echo "xdg-mime is not installed!"
-    exit 0
+    xdgfetchmain "$@"
 fi
