@@ -13,7 +13,7 @@ programisinstalled () {
 xdgfetchmain () {
     case $1 in
         -h*|--h*)
-            printf "${bold}xdgfetch usage${norm}:\n${bold}xdgfetch${norm}:           Shows current xdg session, default applications, and default directories\n${bold}xdgfetch -h${norm}:        Shows this help output\n${bold}xdgfetch -c${norm}:        Changes the color of bold text.  Works with any valid tput color.\n  Ex: 'xdgfetch -c 1', 'xdgfetch -c 1 -x'\n${bold}xdgfetch -i${norm}:        Shows system info from '/proc/'\n${bold}xdgfetch -s${norm}:        Shows current xdg session info\n${bold}xdgfetch -x${norm}:        Shows default xdg applications\n${bold}xdgfetch -a${norm}:        Shows default xdg directories\n${bold}xdgfetch --verbose${norm}: Shows output in xdg syntax\n"
+            printf "${bold}xdgfetch usage${norm}:\n${bold}xdgfetch${norm}:           Shows current xdg session, default applications, and default directories\n${bold}xdgfetch -h${norm}:        Shows this help output\n${bold}xdgfetch -c${norm}:        Changes the color of bold text.  Works with any valid tput color.\n  Ex: 'xdgfetch -c 1', 'xdgfetch -c 1 -x'\n${bold}xdgfetch -i${norm}:        Shows system info from '/proc/'\n${bold}xdgfetch -s${norm}:        Shows current xdg session info\n${bold}xdgfetch -a${norm}:        Shows default xdg applications\n${bold}xdgfetch -d${norm}:        Shows default xdg directories\n${bold}xdgfetch --verbose${norm}: Shows output in xdg syntax\n"
             ;;
         -c*|--c*)
             case $2 in
