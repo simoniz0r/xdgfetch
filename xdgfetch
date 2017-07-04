@@ -182,7 +182,34 @@ xdgfetchmain () {
                     XDGTEXT="${bold}Text:          ${norm}${XDGTEXT::-8}"
                     ;;
             esac
-            printf "${bold}Default xdg applications:${norm}\n$XDGFILEMANAGER\n$XDGMAILTO\n$XDGAUDIO\n$XDGVIDEO\n$XDGIMAGE\n$XDGTEXT\n"
+            XDGOFFICE="$(xdg-mime query default application/vnd.ms-word)" || XDGOFFICE="Not set!        "
+            case $XDGOFFICE in
+                *libreoffice*|*LibreOffice*)
+                    XDGOFFICE="${bold}Office:        ${norm}LibreOffice"
+                    ;;
+                *)
+                    XDGOFFICE="${bold}Office:        ${norm}${XDGOFFICE::-8}"
+                    ;;
+            esac
+            XDGARCHIVE="$(xdg-mime query default application/x-tar)" || XDGARCHIVE="Not set!        "
+            case $XDGARCHIVE in
+                *Ark*|*ark*)
+                    XDGARCHIVE="${bold}Archive:       ${norm}Ark"
+                    ;;
+                *)
+                    XDGARCHIVE="${bold}Archive:       ${norm}${XDGARCHIVE::-8}"
+                    ;;
+            esac
+            XDGPGP="$(xdg-mime query default application/pgp-keys)" || XDGPGP="Not set!        "
+            case $XDGPGP in
+                *kgpg*|*KGpg*)
+                    XDGPGP="${bold}PGP:           ${norm}KGpg"
+                    ;;
+                *)
+                    XDGPGP="${bold}PGP:           ${norm}${XDGPGP::-8}"
+                    ;;
+            esac
+            printf "${bold}Default xdg applications:${norm}\n$XDGFILEMANAGER\n$XDGMAILTO\n$XDGAUDIO\n$XDGVIDEO\n$XDGIMAGE\n$XDGTEXT\n$XDGOFFICE\n$XDGARCHIVE\n$XDGPGP\n"
             ;;
         -d*|--d*)
             if [ -f ~/.config/user-dirs.dirs ]; then
@@ -232,6 +259,12 @@ xdgfetchmain () {
             XDGIMAGE="${bold}image/png:                ${norm}$XDGIMAGE"
             XDGTEXT="$(xdg-mime query default text/plain)" || XDGTEXT="Not set!        "
             XDGTEXT="${bold}text/plain:               ${norm}$XDGTEXT"
+            XDGOFFICE="$(xdg-mime query default application/vnd.ms-word)" || XDGOFFICE="Not set!        "
+            XDGOFFICE="${bold}application/vnd.ms-word: ${norm}$XDGOFFICE"
+            XDGARCHIVE="$(xdg-mime query default application/x-tar)" || XDGARCHIVE="Not set!        "
+            XDGARCHIVE="${bold}application/x-tar:       ${norm}$XDGARCHIVE"
+            XDGPGP="$(xdg-mime query default application/pgp-keys)" || XDGPGP="Not set!        "
+            XDGPGP="${bold}application/pgp-keys:    ${norm}$XDGPGP"
             if [ -f ~/.config/user-dirs.dirs ]; then
                 . ~/.config/user-dirs.dirs
                 XDG_DESKTOP_DIR="${bold}XDG_DESKTOP_DIR:         ${norm}$XDG_DESKTOP_DIR"
@@ -243,7 +276,7 @@ xdgfetchmain () {
                 XDG_TEMPLATES_DIR="${bold}XDG_TEMPLATES_DIR:       ${norm}$XDG_TEMPLATES_DIR"
                 XDG_VIDEOS_DIR="${bold}XDG_VIDEOS_DIR:          ${norm}$XDG_VIDEOS_DIR"
             fi
-            printf "${bold}System info:${norm}\n$VERSION_SIGNATURE\n$UPTIME\n$CPU_MODEL_NAME\n$CPU_CORES\n$CPU_MHZ\n$CPU_CACHE\n$CPU_MODEL\n$CPU_STEPPING\n$LOADAVG\n$SOUND_CARDS\n$GPUS\n$RAM_TOTAL\n$RAM_USED\n$RAM_AVAILABLE\n$SWAP_TOTAL\n$SWAP_USED\n$SWAP_FREE\n\n${bold}Current xdg session:${norm}\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n\n${bold}Default xdg applications:${norm}\n$XDGFILEMANAGER\n$XDGMAILTO\n$XDGAUDIO\n$XDGVIDEO\n$XDGIMAGE\n$XDGTEXT\n\n${bold}Default xdg directories:${norm}\n$XDG_DESKTOP_DIR\n$XDG_DOCUMENTS_DIR\n$XDG_DOWNLOAD_DIR\n$XDG_MUSIC_DIR\n$XDG_PICTURES_DIR\n$XDG_PUBLICSHARE_DIR\n$XDG_TEMPLATES_DIR\n$XDG_VIDEOS_DIR\n"
+            printf "${bold}System info:${norm}\n$VERSION_SIGNATURE\n$UPTIME\n$CPU_MODEL_NAME\n$CPU_CORES\n$CPU_MHZ\n$CPU_CACHE\n$CPU_MODEL\n$CPU_STEPPING\n$LOADAVG\n$SOUND_CARDS\n$GPUS\n$RAM_TOTAL\n$RAM_USED\n$RAM_AVAILABLE\n$SWAP_TOTAL\n$SWAP_USED\n$SWAP_FREE\n\n${bold}Current xdg session:${norm}\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n\n${bold}Default xdg applications:${norm}\n$XDGFILEMANAGER\n$XDGMAILTO\n$XDGAUDIO\n$XDGVIDEO\n$XDGIMAGE\n$XDGTEXT\n$XDGOFFICE\n$XDGARCHIVE\n$XDGPGP\n\n${bold}Default xdg directories:${norm}\n$XDG_DESKTOP_DIR\n$XDG_DOCUMENTS_DIR\n$XDG_DOWNLOAD_DIR\n$XDG_MUSIC_DIR\n$XDG_PICTURES_DIR\n$XDG_PUBLICSHARE_DIR\n$XDG_TEMPLATES_DIR\n$XDG_VIDEOS_DIR\n"
             ;;
         *)
             VERSION_SIGNATURE="${bold}OS Version:    ${norm}$(cat /proc/version_signature)"
@@ -394,6 +427,33 @@ xdgfetchmain () {
                     XDGTEXT="${bold}Text:          ${norm}${XDGTEXT::-8}"
                     ;;
             esac
+            XDGOFFICE="$(xdg-mime query default application/vnd.ms-word)" || XDGOFFICE="Not set!        "
+            case $XDGOFFICE in
+                *libreoffice*|*LibreOffice*)
+                    XDGOFFICE="${bold}Office:        ${norm}LibreOffice"
+                    ;;
+                *)
+                    XDGOFFICE="${bold}Office:        ${norm}${XDGOFFICE::-8}"
+                    ;;
+            esac
+            XDGARCHIVE="$(xdg-mime query default application/x-tar)" || XDGARCHIVE="Not set!        "
+            case $XDGARCHIVE in
+                *Ark*|*ark*)
+                    XDGARCHIVE="${bold}Archive:       ${norm}Ark"
+                    ;;
+                *)
+                    XDGARCHIVE="${bold}Archive:       ${norm}${XDGARCHIVE::-8}"
+                    ;;
+            esac
+            XDGPGP="$(xdg-mime query default application/pgp-keys)" || XDGPGP="Not set!        "
+            case $XDGPGP in
+                *kgpg*|*KGpg*)
+                    XDGPGP="${bold}PGP:           ${norm}KGpg"
+                    ;;
+                *)
+                    XDGPGP="${bold}PGP:           ${norm}${XDGPGP::-8}"
+                    ;;
+            esac
             if [ -f ~/.config/user-dirs.dirs ]; then
                 . ~/.config/user-dirs.dirs
                 XDG_DESKTOP_DIR="${bold}Desktop:       ${norm}$XDG_DESKTOP_DIR"
@@ -405,7 +465,7 @@ xdgfetchmain () {
                 XDG_TEMPLATES_DIR="${bold}Templates:     ${norm}$XDG_TEMPLATES_DIR"
                 XDG_VIDEOS_DIR="${bold}Videos:        ${norm}$XDG_VIDEOS_DIR"
             fi
-            printf "${bold}System info:${norm}\n$VERSION_SIGNATURE\n$UPTIME\n$CPU_MODEL_NAME\n$CPU_CORES\n$CPU_MHZ\n$CPU_CACHE\n$CPU_MODEL\n$CPU_STEPPING\n$LOADAVG\n$SOUND_CARDS\n$GPUS\n$RAM_TOTAL\n$RAM_USED\n$RAM_AVAILABLE\n$SWAP_TOTAL\n$SWAP_USED\n$SWAP_FREE\n\n${bold}Current xdg session:${norm}\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n\n${bold}Default xdg applications:${norm}\n$XDGFILEMANAGER\n$XDGMAILTO\n$XDGAUDIO\n$XDGVIDEO\n$XDGIMAGE\n$XDGTEXT\n\n${bold}Default xdg directories:${norm}\n$XDG_DESKTOP_DIR\n$XDG_DOCUMENTS_DIR\n$XDG_DOWNLOAD_DIR\n$XDG_MUSIC_DIR\n$XDG_PICTURES_DIR\n$XDG_PUBLICSHARE_DIR\n$XDG_TEMPLATES_DIR\n$XDG_VIDEOS_DIR\n"
+            printf "${bold}System info:${norm}\n$VERSION_SIGNATURE\n$UPTIME\n$CPU_MODEL_NAME\n$CPU_CORES\n$CPU_MHZ\n$CPU_CACHE\n$CPU_MODEL\n$CPU_STEPPING\n$LOADAVG\n$SOUND_CARDS\n$GPUS\n$RAM_TOTAL\n$RAM_USED\n$RAM_AVAILABLE\n$SWAP_TOTAL\n$SWAP_USED\n$SWAP_FREE\n\n${bold}Current xdg session:${norm}\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n\n${bold}Default xdg applications:${norm}\n$XDGFILEMANAGER\n$XDGMAILTO\n$XDGAUDIO\n$XDGVIDEO\n$XDGIMAGE\n$XDGTEXT\n$XDGOFFICE\n$XDGARCHIVE\n$XDGPGP\n\n${bold}Default xdg directories:${norm}\n$XDG_DESKTOP_DIR\n$XDG_DOCUMENTS_DIR\n$XDG_DOWNLOAD_DIR\n$XDG_MUSIC_DIR\n$XDG_PICTURES_DIR\n$XDG_PUBLICSHARE_DIR\n$XDG_TEMPLATES_DIR\n$XDG_VIDEOS_DIR\n"
     esac
 }
 
