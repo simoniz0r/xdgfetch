@@ -260,11 +260,11 @@ xdgfetchmain () {
             XDGTEXT="$(xdg-mime query default text/plain)" || XDGTEXT="Not set!        "
             XDGTEXT="${bold}text/plain:               ${norm}$XDGTEXT"
             XDGOFFICE="$(xdg-mime query default application/vnd.ms-word)" || XDGOFFICE="Not set!        "
-            XDGOFFICE="${bold}application/vnd.ms-word: ${norm}$XDGOFFICE"
+            XDGOFFICE="${bold}application/vnd.ms-word:  ${norm}$XDGOFFICE"
             XDGARCHIVE="$(xdg-mime query default application/x-tar)" || XDGARCHIVE="Not set!        "
-            XDGARCHIVE="${bold}application/x-tar:       ${norm}$XDGARCHIVE"
+            XDGARCHIVE="${bold}application/x-tar:        ${norm}$XDGARCHIVE"
             XDGPGP="$(xdg-mime query default application/pgp-keys)" || XDGPGP="Not set!        "
-            XDGPGP="${bold}application/pgp-keys:    ${norm}$XDGPGP"
+            XDGPGP="${bold}application/pgp-keys:     ${norm}$XDGPGP"
             if [ -f ~/.config/user-dirs.dirs ]; then
                 . ~/.config/user-dirs.dirs
                 XDG_DESKTOP_DIR="${bold}XDG_DESKTOP_DIR:         ${norm}$XDG_DESKTOP_DIR"
