@@ -294,7 +294,7 @@ xdgfetchmain () {
             RAM_USED="${bold}RAM Used:      ${norm}$(cat /proc/meminfo | grep Cached | cut -c 18- | head -n 1)"
             RAM_AVAILABLE="${bold}RAM Available: ${norm}$(cat /proc/meminfo | grep MemAvailable | cut -c 18-)"
             SWAP_TOTAL="${bold}Swap Total:    ${norm}$(cat /proc/meminfo | grep SwapTotal | cut -c 18-)"
-            SWAP_USED="${bold}Swap Used:     ${norm}$(cat /proc/meminfo | grep SwapCached | cut -c 22-)"
+            SWAP_USED="${bold}Swap Used:     ${norm}$(cat /proc/meminfo | grep SwapCached | cut -c 18-)"
             SWAP_FREE="${bold}Swap Free:     ${norm}$(cat /proc/meminfo | grep SwapFree | cut -c 18-)"
             XDG_CURRENT_DESKTOP="${bold}Desktop:       ${norm}$XDG_CURRENT_DESKTOP"
             XDG_SESSION_TYPE="${bold}Type:          ${norm}$XDG_SESSION_TYPE"
