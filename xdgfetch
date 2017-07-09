@@ -29,7 +29,8 @@ xdgfetchmain () {
             ;;
         -i*|--i*)
             VERSION_SIGNATURE="${bold}OS Version:    ${norm}$(cat /proc/version_signature)"
-            UPTIME="${bold}Uptime:        ${norm}$(cat /proc/uptime)"
+            UPTIME="$(cat /proc/uptime | cut -f1 -d".")"
+            UPTIME="${bold}Uptime:        ${norm}$(expr $UPTIME / 60) minutes"
             CPU_MODEL_NAME="${bold}CPU:           ${norm}$(cat /proc/cpuinfo | grep 'model name' | head -n 1 | cut -c 14-)"
             CPU_CORES="${bold}CPU Cores:     ${norm}$(cat /proc/cpuinfo | grep 'cpu MHz' | wc -l)"
             CPU_MHZ="${bold}CPU MHz:       ${norm}$(cat /proc/cpuinfo | grep 'cpu MHz' | cut -c 12- | tr '\n' ' ')"
@@ -292,7 +293,8 @@ xdgfetchmain () {
             ;;
         *)
             VERSION_SIGNATURE="${bold}OS Version:    ${norm}$(cat /proc/version_signature)"
-            UPTIME="${bold}Uptime:        ${norm}$(cat /proc/uptime)"
+            UPTIME="$(cat /proc/uptime | cut -f1 -d".")"
+            UPTIME="${bold}Uptime:        ${norm}$(expr $UPTIME / 60) minutes"
             CPU_MODEL_NAME="${bold}CPU:           ${norm}$(cat /proc/cpuinfo | grep 'model name' | head -n 1 | cut -c 14-)"
             CPU_CORES="${bold}CPU Cores:     ${norm}$(cat /proc/cpuinfo | grep 'cpu MHz' | wc -l)"
             CPU_MHZ="${bold}CPU MHz:       ${norm}$(cat /proc/cpuinfo | grep 'cpu MHz' | cut -c 12- | tr '\n' ' ')"
