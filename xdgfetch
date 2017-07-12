@@ -51,7 +51,7 @@ xdgfetchmain () {
             fi
             SWAP_TOTAL="$(cat /proc/meminfo | grep SwapTotal | cut -c 18- | tr -d 'kB')"
             SWAP_FREE="$(cat /proc/meminfo | grep SwapFree | cut -c 18- | tr -d 'kB')"
-            SWAP_USED="${bold}Swap Used:        ${norm}$(expr $(expr $(echo "$SWAP_TOTAL") - $(echo "$SWAP_FREE")) / 1000) mB"
+            SWAP_USED="${bold}Swap Used:     ${norm}$(expr $(expr $(echo "$SWAP_TOTAL") - $(echo "$SWAP_FREE")) / 1000) mB"
             SWAP_TOTAL="${bold}Swap Total:    ${norm}$(expr $SWAP_TOTAL / 1000) mB"
             if [[ "$SWAP_FREE" < "1000" ]]; then
                 SWAP_FREE="${bold}Swap Free:  ${norm}${SWAP_FREE}kB"
@@ -315,7 +315,7 @@ xdgfetchmain () {
             fi
             SWAP_TOTAL="$(cat /proc/meminfo | grep SwapTotal | cut -c 18- | tr -d 'kB')"
             SWAP_FREE="$(cat /proc/meminfo | grep SwapFree | cut -c 18- | tr -d 'kB')"
-            SWAP_USED="${bold}Swap Used:        ${norm}$(expr $(expr $(echo "$SWAP_TOTAL") - $(echo "$SWAP_FREE")) / 1000) mB"
+            SWAP_USED="${bold}Swap Used:     ${norm}$(expr $(expr $(echo "$SWAP_TOTAL") - $(echo "$SWAP_FREE")) / 1000) mB"
             SWAP_TOTAL="${bold}Swap Total:    ${norm}$(expr $SWAP_TOTAL / 1000) mB"
             if [[ "$SWAP_FREE" < "1000" ]]; then
                 SWAP_FREE="${bold}Swap Free:  ${norm}${SWAP_FREE}kB"
