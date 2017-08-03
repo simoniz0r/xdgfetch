@@ -2,6 +2,7 @@
 # A script that uses 'xdg-mime' to fetch the default apps on the system.
 # Dependencies: 'xdg-mime', 'xdg-settings'
 # Written by simonizor 5/27/2017 - http://www.simonizor.gq/linuxapps
+# License: GPLv2 Only
 
 bold=$(tput bold; tput setaf 7)
 norm=$(tput sgr0)
@@ -223,7 +224,7 @@ xdgfetchmain () {
                     XDGPGP="${bold}PGP:           ${norm}${XDGPGP::-8}"
                     ;;
             esac
-            printf "${bold}Default xdg applications:${norm}\n$XDGFILEMANAGER\n$XDGMAILTO\n$XDGAUDIO\n$XDGVIDEO\n$XDGIMAGE\n$XDGTEXT\n$XDGOFFICE\n$XDGARCHIVE\n$XDGPGP\n"
+            printf "${bold}Default xdg applications:${norm}\n$XDGFILEMANAGER\n$XDGBROWSER\n$XDGMAILTO\n$XDGAUDIO\n$XDGVIDEO\n$XDGIMAGE\n$XDGTEXT\n$XDGOFFICE\n$XDGARCHIVE\n$XDGPGP\n"
             ;;
         -d*|--d*)
             if [ -f ~/.config/user-dirs.dirs ]; then
@@ -290,7 +291,7 @@ xdgfetchmain () {
                 XDG_TEMPLATES_DIR="${bold}XDG_TEMPLATES_DIR:       ${norm}$XDG_TEMPLATES_DIR"
                 XDG_VIDEOS_DIR="${bold}XDG_VIDEOS_DIR:          ${norm}$XDG_VIDEOS_DIR"
             fi
-            printf "${bold}System info:${norm}\n$VERSION_SIGNATURE\n$UPTIME\n$CPU_MODEL_NAME\n$CPU_CORES\n$CPU_MHZ\n$CPU_CACHE\n$CPU_MODEL\n$CPU_STEPPING\n$LOADAVG\n$SOUND_CARDS\n$GPUS\n$RAM_TOTAL\n$RAM_USED\n$RAM_AVAILABLE\n$SWAP_TOTAL\n$SWAP_USED\n$SWAP_FREE\n\n${bold}Current xdg session:${norm}\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n\n${bold}Default xdg applications:${norm}\n$XDGFILEMANAGER\n$XDGMAILTO\n$XDGAUDIO\n$XDGVIDEO\n$XDGIMAGE\n$XDGTEXT\n$XDGOFFICE\n$XDGARCHIVE\n$XDGPGP\n\n${bold}Default xdg directories:${norm}\n$XDG_DESKTOP_DIR\n$XDG_DOCUMENTS_DIR\n$XDG_DOWNLOAD_DIR\n$XDG_MUSIC_DIR\n$XDG_PICTURES_DIR\n$XDG_PUBLICSHARE_DIR\n$XDG_TEMPLATES_DIR\n$XDG_VIDEOS_DIR\n"
+            printf "${bold}System info:${norm}\n$VERSION_SIGNATURE\n$UPTIME\n$CPU_MODEL_NAME\n$CPU_CORES\n$CPU_MHZ\n$CPU_CACHE\n$CPU_MODEL\n$CPU_STEPPING\n$LOADAVG\n$SOUND_CARDS\n$GPUS\n$RAM_TOTAL\n$RAM_USED\n$RAM_AVAILABLE\n$SWAP_TOTAL\n$SWAP_USED\n$SWAP_FREE\n\n${bold}Current xdg session:${norm}\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n\n${bold}Default xdg applications:${norm}\n$XDGFILEMANAGER\n$XDGBROWSER\n$XDGMAILTO\n$XDGAUDIO\n$XDGVIDEO\n$XDGIMAGE\n$XDGTEXT\n$XDGOFFICE\n$XDGARCHIVE\n$XDGPGP\n\n${bold}Default xdg directories:${norm}\n$XDG_DESKTOP_DIR\n$XDG_DOCUMENTS_DIR\n$XDG_DOWNLOAD_DIR\n$XDG_MUSIC_DIR\n$XDG_PICTURES_DIR\n$XDG_PUBLICSHARE_DIR\n$XDG_TEMPLATES_DIR\n$XDG_VIDEOS_DIR\n\n"
             ;;
         *)
             VERSION_SIGNATURE="${bold}OS Version:    ${norm}$(cat /proc/version_signature)"
@@ -493,7 +494,7 @@ xdgfetchmain () {
                 XDG_TEMPLATES_DIR="${bold}Templates:     ${norm}$XDG_TEMPLATES_DIR"
                 XDG_VIDEOS_DIR="${bold}Videos:        ${norm}$XDG_VIDEOS_DIR"
             fi
-            printf "${bold}System info:${norm}\n$VERSION_SIGNATURE\n$UPTIME\n$CPU_MODEL_NAME\n$CPU_CORES\n$CPU_MHZ\n$CPU_CACHE\n$CPU_MODEL\n$CPU_STEPPING\n$LOADAVG\n$SOUND_CARDS\n$GPUS\n$RAM_TOTAL\n$RAM_USED\n$RAM_AVAILABLE\n$SWAP_TOTAL\n$SWAP_USED\n$SWAP_FREE\n\n${bold}Current xdg session:${norm}\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n\n${bold}Default xdg applications:${norm}\n$XDGFILEMANAGER\n$XDGMAILTO\n$XDGAUDIO\n$XDGVIDEO\n$XDGIMAGE\n$XDGTEXT\n$XDGOFFICE\n$XDGARCHIVE\n$XDGPGP\n\n${bold}Default xdg directories:${norm}\n$XDG_DESKTOP_DIR\n$XDG_DOCUMENTS_DIR\n$XDG_DOWNLOAD_DIR\n$XDG_MUSIC_DIR\n$XDG_PICTURES_DIR\n$XDG_PUBLICSHARE_DIR\n$XDG_TEMPLATES_DIR\n$XDG_VIDEOS_DIR\n"
+            printf "${bold}System info:${norm}\n$VERSION_SIGNATURE\n$UPTIME\n$CPU_MODEL_NAME\n$CPU_CORES\n$CPU_MHZ\n$CPU_CACHE\n$CPU_MODEL\n$CPU_STEPPING\n$LOADAVG\n$SOUND_CARDS\n$GPUS\n$RAM_TOTAL\n$RAM_USED\n$RAM_AVAILABLE\n$SWAP_TOTAL\n$SWAP_USED\n$SWAP_FREE\n\n${bold}Current xdg session:${norm}\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n\n${bold}Default xdg applications:${norm}\n$XDGFILEMANAGER\n$XDGBROWSER\n$XDGMAILTO\n$XDGAUDIO\n$XDGVIDEO\n$XDGIMAGE\n$XDGTEXT\n$XDGOFFICE\n$XDGARCHIVE\n$XDGPGP\n\n${bold}Default xdg directories:${norm}\n$XDG_DESKTOP_DIR\n$XDG_DOCUMENTS_DIR\n$XDG_DOWNLOAD_DIR\n$XDG_MUSIC_DIR\n$XDG_PICTURES_DIR\n$XDG_PUBLICSHARE_DIR\n$XDG_TEMPLATES_DIR\n$XDG_VIDEOS_DIR\n\n"
     esac
 }
 
