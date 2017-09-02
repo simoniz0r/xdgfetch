@@ -18,32 +18,16 @@ infofunc () {
     CPU_MODEL_NAME="${bold}CPU:           ${norm}$(cat /proc/cpuinfo | grep 'model name' | head -n 1 | cut -c 14-)"
     CPU_CORES="${bold}CPU Cores:     ${norm}$(cat /proc/cpuinfo | grep 'cpu MHz' | wc -l)"
     CPU_MHZ="${bold}CPU MHz:       ${norm}$(cat /proc/cpuinfo | grep 'cpu MHz' | cut -c 12- | tr '\n' ' ')"
-    CPU_CACHE="${bold}CPU Cache:     ${norm}$(cat /proc/cpuinfo | grep 'cache size' | head -n 1 | cut -c 14-)"
-    CPU_MODEL="${bold}CPU Model:     ${norm}$(cat /proc/cpuinfo | grep 'model' | head -n 1 | cut -c 10-)"
-    CPU_STEPPING="${bold}CPU Stepping:  ${norm}$(cat /proc/cpuinfo | grep 'stepping' | head -n 1 | cut -c 12-)"
     LOADAVG="${bold}Load Average:  ${norm}$(cat /proc/loadavg)"
-    SOUND_CARDS="${bold}Sound Card(s):\n${norm}$(cat /proc/asound/cards | cut -c 2-)"
-    GPUS="${bold}GPU(s):\n${norm}$(lspci -k | grep -A 3 VGA)"
     RAM_TOTAL="$(cat /proc/meminfo | grep MemTotal | cut -c 18- | tr -d 'kB')"
-    RAM_AVAILABLE="$(cat /proc/meminfo | grep MemAvailable | cut -c 18- | tr -d 'kB')"
     RAM_USED="$(cat /proc/meminfo | grep 'Active:' | cut -f2 -d":" | tr -d 'kB')"
-    RAM_USED="${bold}RAM Used:      ${norm}$(($RAM_USED/1000)) mB"
-    RAM_TOTAL="${bold}RAM Total:     ${norm}$(expr $RAM_TOTAL / 1000) mB"
-    if [[ "$RAM_AVAILABLE" < "1000" ]]; then
-        RAM_AVAILABLE="${bold}RAM Free:  ${norm}${RAM_AVAILABLE}kB"
-    else
-        RAM_AVAILABLE="${bold}RAM Free:      ${norm}$(expr $RAM_AVAILABLE / 1000) mB"
-    fi
+    RAM_USED="${bold}RAM Used:      ${norm}$(($RAM_USED/1000)) mB / $(($RAM_TOTAL/1000))mB"
     SWAP_TOTAL="$(cat /proc/meminfo | grep SwapTotal | cut -c 18- | tr -d 'kB')"
     SWAP_FREE="$(cat /proc/meminfo | grep SwapFree | cut -c 18- | tr -d 'kB')"
-    SWAP_USED="${bold}Swap Used:     ${norm}$(expr $(expr $(echo "$SWAP_TOTAL") - $(echo "$SWAP_FREE")) / 1000) mB"
-    SWAP_TOTAL="${bold}Swap Total:    ${norm}$(expr $SWAP_TOTAL / 1000) mB"
-    if [[ "$SWAP_FREE" < "1000" ]]; then
-        SWAP_FREE="${bold}Swap Free:  ${norm}${SWAP_FREE}kB"
-    else
-        SWAP_FREE="${bold}Swap Free:     ${norm}$(expr $SWAP_FREE / 1000) mB"
-    fi
-    printf "${bold}System info:${norm}\n$VERSION_SIGNATURE\n$UPTIME\n$CPU_MODEL_NAME\n$CPU_CORES\n$CPU_MHZ\n$CPU_CACHE\n$CPU_MODEL\n$CPU_STEPPING\n$LOADAVG\n$SOUND_CARDS\n$GPUS\n$RAM_TOTAL\n$RAM_USED\n$RAM_AVAILABLE\n$SWAP_TOTAL\n$SWAP_USED\n$SWAP_FREE\n"
+    SWAP_USED="${bold}Swap Used:     ${norm}$(expr $(expr $(echo "$SWAP_TOTAL") - $(echo "$SWAP_FREE")) / 1000) mB / $(($SWAP_TOTAL/1000))mB"
+    SOUND_CARDS="${bold}Sound Card(s):\n${norm}$(cat /proc/asound/cards | cut -c 2-)"
+    GPUS="${bold}GPU(s):\n${norm}$(lspci -k | grep -A 2 VGA)"
+    printf "${bold}System info:${norm}\n$VERSION_SIGNATURE\n$UPTIME\n$CPU_MODEL_NAME\n$CPU_CORES\n$CPU_MHZ\n$LOADAVG\n$RAM_USED\n$SWAP_USED\n$SOUND_CARDS\n$GPUS\n"
 }
 
 sessionfunc () {
