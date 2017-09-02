@@ -44,7 +44,7 @@ infofunc () {
     else
         SWAP_FREE="${bold}Swap Free:     ${norm}$(expr $SWAP_FREE / 1000) mB"
     fi
-    printf "${bold}System info:${norm}\n$VERSION_SIGNATURE\n$UPTIME\n$CPU_MODEL_NAME\n$CPU_CORES\n$CPU_MHZ\n$LOADAVG\n$SOUND_CARDS\n$GPUS\n$RAM_USED\n$SWAP_USED\n"
+    printf "${bold}System info:${norm}\n$VERSION_SIGNATURE\n$UPTIME\n$CPU_MODEL_NAME\n$CPU_CORES\n$CPU_MHZ\n$LOADAVG\n$RAM_USED\n$SWAP_USED\n$SOUND_CARDS\n$GPUS\n"
 }
 
 sessionfunc () {
