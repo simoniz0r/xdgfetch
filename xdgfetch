@@ -329,6 +329,8 @@ xdgfetchmain () {
         *)
             infofunc
             echo
+            sessionfunc
+            echo
             appfunc
             echo
             directoriesfunc
