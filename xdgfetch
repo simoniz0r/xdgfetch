@@ -14,13 +14,13 @@ programisinstalled () {
 infofunc () {
     DATE="${bold}Date:          ${norm}$(date)"
     VERSION_SIGNATURE="${bold}OS Version:    ${norm}$(cat /proc/version_signature)"
+    XDG_CURRENT_DESKTOP="${bold}Desktop:       ${norm}$XDG_CURRENT_DESKTOP"
+    XDG_SESSION_TYPE="${bold}Session:       ${norm}$XDG_SESSION_TYPE"
     UPTIME="$(cat /proc/uptime | cut -f1 -d".")"
     UPTIME="${bold}Uptime:        ${norm}$(expr $UPTIME / 60) minutes"
     PROCESSES="${bold}Processes:     ${norm}$(ps -eo comm | wc -l)"
     PACKAGES="${bold}Packages:      ${norm}$(dpkg --list | wc -l || rpm -qa | wc -l || pacman -Qe | wc -l || equery list | wc -l || xbps-query -l | wc -l || echo "Unknown distro")"
-    XDG_CURRENT_DESKTOP="${bold}Desktop:       ${norm}$XDG_CURRENT_DESKTOP"
-    XDG_SESSION_TYPE="${bold}Session:       ${norm}$XDG_SESSION_TYPE"
-    printf "${bold}System info:${norm}\n$DATE\n$VERSION_SIGNATURE\n$UPTIME\n$PROCESSES\n$PACKAGES\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n"
+    printf "${bold}System info:${norm}\n$DATE\n$VERSION_SIGNATURE\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n$UPTIME\n$PROCESSES\n$PACKAGES\n"
 }
 
 hardwarefunc () {
