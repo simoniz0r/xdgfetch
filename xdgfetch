@@ -11,15 +11,32 @@ programisinstalled () {
     type "$1" >/dev/null 2>&1
 }
 
+findpkgmanfunc () {
+    type dpkg >/dev/null 2>&1 && PKGMAN="$(dpkg --list | wc -l)" || PKGMAN=""
+    if [ -z "$PKGMAN" ]; then
+        type rpm >/dev/null 2>&1 && PKGMAN="$(rpm -qa | wc -l)" || PKGMAN=""
+    fi
+    if [ -z "$PKGMAN" ]; then
+        type pacman >/dev/null 2>&1 && PKGMAN="$(pacman -Qe | wc -l)" || PKGMAN=""
+    fi
+    if [ -z "$PKGMAN" ]; then
+        type equery >/dev/null 2>&1 && PKGMAN="$(equery list | wc -l)" || PKGMAN=""
+    fi
+    if [ -z "$PKGMAN" ]; then
+        type xbps-query >/dev/null 2>&1 && PKGMAN="$(xbps-query -l | wc -l)" || PKGMAN="$(echo Unknown!)"
+    fi
+}
+
 infofunc () {
+    findpkgmanfunc
     DATE="${bold}Date:          ${norm}$(date)"
-    VERSION_SIGNATURE="${bold}OS Version:    ${norm}$(cat /proc/version_signature)"
+    VERSION_SIGNATURE="${bold}OS Version:    ${norm}$(cat /proc/version_signature 2>/dev/null || echo "Unknown!")"
     XDG_CURRENT_DESKTOP="${bold}Desktop:       ${norm}$XDG_CURRENT_DESKTOP"
     XDG_SESSION_TYPE="${bold}Session:       ${norm}$XDG_SESSION_TYPE"
     UPTIME="$(cat /proc/uptime | cut -f1 -d".")"
     UPTIME="${bold}Uptime:        ${norm}$(expr $UPTIME / 60) minutes"
     PROCESSES="${bold}Processes:     ${norm}$(ps -eo comm | wc -l)"
-    PACKAGES="${bold}Packages:      ${norm}$(dpkg --list | wc -l || rpm -qa | wc -l || pacman -Qe | wc -l || equery list | wc -l || xbps-query -l | wc -l || echo "Unknown distro")"
+    PACKAGES="${bold}Packages:      ${norm}$PKGMAN"
     printf "${bold}System info:${norm}\n$DATE\n$VERSION_SIGNATURE\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n$UPTIME\n$PROCESSES\n$PACKAGES\n"
 }
 
