@@ -241,31 +241,26 @@ xdgfetchmain () {
             esac
             ;;
         -i*|--i*)
-            echo
             infofunc
             echo
             exit 0
             ;;
         -h*|--h*)
-            echo
             hardwarefunc
             echo
             exit 0
             ;;
         -s*|--s*)
-            echo
             sessionfunc
             echo
             exit 0
             ;;
         -a*|--a*)
-            echo
             appfunc
             echo
             exit 0
             ;;
         -d*|--d*)
-            echo
             directoriesfunc
             echo
             exit 0
