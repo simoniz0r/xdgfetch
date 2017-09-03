@@ -225,14 +225,12 @@ directoriesfunc () {
 xdgfetchmain () {
     case $1 in
         --help)
-            printf "${bold}xdgfetch usage${norm}:\n${bold}xdgfetch${norm}:           Shows current system info, xdg session, default applications, and default directories\n${bold}xdgfetch --help${norm}:        Shows this help output\n${bold}xdgfetch -c${norm}:        Changes the color of bold text.  Works with any valid tput color.\n  Ex: 'xdgfetch -c 1', 'xdgfetch -c 1 -x'\n${bold}xdgfetch -i${norm}:        Shows system info\n${bold}xdgfetch -h${norm}:        Shows hardware info\n${bold}xdgfetch -s${norm}:        Shows current session info\n${bold}xdgfetch -a${norm}:        Shows default applications\n${bold}xdgfetch -d${norm}:        Shows default directories\n"
-            exit 0
+            printf "${bold}xdgfetch usage${norm}:\n${bold}xdgfetch${norm}:           Shows system, hardware, session, default program, and default directory info\n${bold}xdgfetch -c=n${norm}:      Changes the color of bold text; works with any valid tput color\n                    Ex: 'xdgfetch -c=1', 'xdgfetch -c=1 -i'\n${bold}xdgfetch -i${norm}:        Shows system info\n${bold}xdgfetch -h${norm}:        Shows hardware info\n${bold}xdgfetch -s${norm}:        Shows current session info\n${bold}xdgfetch -a${norm}:        Shows default applications\n${bold}xdgfetch -d${norm}:        Shows default directories\n${bold}xdgfetch --help${norm}:    Shows this help output\n"
             ;;
         -c*|--c*)
-            case $2 in
+            case $COLOR in
                 0*|1*|2*|3*|4*|5*|6*|7*|8*|9*)
-                    bold=$(tput bold; tput setaf $2)
-                    xdgfetchmain "$3"
+                    bold=$(tput bold; tput setaf $COLOR)
                     ;;
                 *)
                     echo "Invalid color choice."
@@ -243,56 +241,69 @@ xdgfetchmain () {
         -i*|--i*)
             infofunc
             echo
-            exit 0
             ;;
         -h*|--h*)
             hardwarefunc
             echo
-            exit 0
             ;;
         -s*|--s*)
             sessionfunc
             echo
-            exit 0
             ;;
         -a*|--a*)
             appfunc
             echo
-            exit 0
             ;;
         -d*|--d*)
             directoriesfunc
             echo
-            exit 0
-            ;;
-        *)
-            infofunc
-            echo
-            hardwarefunc
-            echo
-            sessionfunc
-            echo
-            appfunc
-            echo
-            directoriesfunc
-            echo
-            exit 0
             ;;
     esac
 }
 
 programisinstalled "xdg-mime" || { echo "xdg-mime is not installed!"; exit 1; }
 programisinstalled "xdg-settings" || { echo "xdg-settings is not installed!"; exit 1; }
-if [ ! -z "$2" ]; then
-    case $3 in
-        0*|1*|2*|3*|4*|5*|6*|7*|8*|9*)
-            bold=$(tput bold; tput setaf $3)
-            xdgfetchmain "$@"
-            ;;
-        *)
-            xdgfetchmain "$@"
+if [ -z "$1" ]; then
+    infofunc
+    echo
+    hardwarefunc
+    echo
+    sessionfunc
+    echo
+    appfunc
+    echo
+    directoriesfunc
+    echo
+else
+    case $1 in
+        *-c*)
+            if [ -z "$2" ]; then
+                COLOR="$(echo "$1" |cut -f2 -d"=")"
+                case $COLOR in
+                    0*|1*|2*|3*|4*|5*|6*|7*|8*|9*)
+                        bold=$(tput bold; tput setaf $COLOR)
+                        infofunc
+                        echo
+                        hardwarefunc
+                        echo
+                        sessionfunc
+                        echo
+                        appfunc
+                        echo
+                        directoriesfunc
+                        echo
+                        ;;
+                    *)
+                        echo "Invalid color choice."
+                        exit 1
+                        ;;
+                esac
+            fi
             ;;
     esac
-else
-    xdgfetchmain "$@"
+    for arg in $@; do
+        COLOR="$(echo "$arg" |cut -f2 -d"=")"
+        xdgfetchmain "$arg"
+    done
 fi
+exit 0
