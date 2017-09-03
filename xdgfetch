@@ -33,7 +33,7 @@ infofunc () {
         . /etc/os-release
     fi
     DATE="${bold}Date:          ${norm}$(date)"
-    VERSION_SIGNATURE="${bold}OS Version:    ${norm}$(cat /proc/version_signature 2>/dev/null || cat /proc/version | cut -f-3 -d" " || echo "Unknown!")"
+    VERSION_SIGNATURE="${bold}OS Version:    ${norm}$(cat /proc/version_signature 2>/dev/null || cat /proc/version 2>/dev/null | cut -f-3 -d" " || echo "Unknown!")"
     if [ -z "$PRETTY_NAME" ]; then
         PRETTY_NAME="$NAME"
     fi
