@@ -249,35 +249,24 @@ directoriesfunc () {
 
 xdgfetchmain () {
     case $1 in
-        --help)
-            printf "${bold}xdgfetch usage${norm}:\n${bold}xdgfetch${norm}:           Shows system, hardware, session, default program, and default directory info\n${bold}xdgfetch -c=n${norm}:      Changes the color of bold text; works with any valid tput color\n                    Ex: 'xdgfetch -c=1', 'xdgfetch -c=1 -i'\n${bold}xdgfetch -i${norm}:        Shows system info\n${bold}xdgfetch -h${norm}:        Shows hardware info\n${bold}xdgfetch -a${norm}:        Shows default applications\n${bold}xdgfetch -d${norm}:        Shows default directories\n${bold}xdgfetch --help${norm}:    Shows this help output\n"
-            ;;
-        -c*|--c*)
-            case $COLOR in
-                0*|1*|2*|3*|4*|5*|6*|7*|8*|9*)
-                    bold=$(tput bold; tput setaf $COLOR)
-                    ;;
-                *)
-                    echo "Invalid color choice."
-                    exit 1
-                    ;;
-            esac
-            ;;
-        -i*|--i*)
+        -i*|-s*)
             infofunc
             echo
             ;;
-        -h*|--h*)
+        -h*)
             hardwarefunc
             echo
             ;;
-        -a*|--a*)
+        -a*)
             appfunc
             echo
             ;;
-        -d*|--d*)
+        -d*)
             directoriesfunc
             echo
+            ;;
+        --help)
+            printf "${bold}xdgfetch usage${norm}:\n${bold}xdgfetch${norm}:           Shows system, hardware, session, default program, and default directory info\n${bold}xdgfetch -c=n${norm}:      Changes the color of bold text; works with any valid tput color\n                    Ex: 'xdgfetch -c=1', 'xdgfetch -c=1 -i'\n${bold}xdgfetch -i${norm}:        Shows system info\n${bold}xdgfetch -h${norm}:        Shows hardware info\n${bold}xdgfetch -a${norm}:        Shows default applications\n${bold}xdgfetch -d${norm}:        Shows default directories\n${bold}xdgfetch --help${norm}:    Shows this help output\n"
             ;;
     esac
 }
@@ -312,16 +301,42 @@ else
                         exit 0
                         ;;
                     *)
-                        echo "Invalid color choice."
-                        exit 1
+                        xdgfetchmain "--help"
+                        ;;
+                esac
+            else
+                if echo "$@" | grep -q '='; then
+                    COLOR="$(echo "$@" |cut -f2 -d"=" | cut -f1 -d" ")"
+                    case $COLOR in
+                        0*|1*|2*|3*|4*|5*|6*|7*|8*|9*)
+                            bold=$(tput bold; tput setaf $COLOR)
+                            ;;
+                        *)
+                            bold=$(tput bold; tput setaf 7)
+                            ;;
+                    esac
+                fi
+                for arg in $@; do
+                    xdgfetchmain "$arg"
+                done
+            fi
+            ;;
+        *)
+            if echo "$@" | grep -q '='; then
+                COLOR="$(echo "$@" |cut -f2 -d"=" | cut -f1 -d" ")"
+                case $COLOR in
+                    0*|1*|2*|3*|4*|5*|6*|7*|8*|9*)
+                        bold=$(tput bold; tput setaf $COLOR)
+                        ;;
+                    *)
+                        bold=$(tput bold; tput setaf 7)
                         ;;
                 esac
             fi
+            for arg in $@; do
+                xdgfetchmain "$arg"
+            done
             ;;
     esac
-    for arg in $@; do
-        COLOR="$(echo "$arg" |cut -f2 -d"=")"
-        xdgfetchmain "$arg"
-    done
 fi
 exit 0
