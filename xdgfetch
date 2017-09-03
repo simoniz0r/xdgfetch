@@ -55,7 +55,12 @@ hardwarefunc () {
     SWAP_TOTAL="$(cat /proc/meminfo | grep SwapTotal | cut -f2- -d" " | tr -d 'kB[:space:]')"
     SWAP_FREE="$(cat /proc/meminfo | grep SwapFree | cut -f2- -d" " | tr -d 'kB[:space:]')"
     SWAP_USED="$(($SWAP_TOTAL-$SWAP_FREE))"
-    SWAP_USED="${bold}Swap Used:     ${norm}$(($SWAP_USED/1000)) / $(($SWAP_TOTAL/1000)) mB"
+    if [ "$SWAP_USED" -lt "1000" ]; then
+        SWAP_USED="$(echo $SWAP_USED kB)"
+    else
+        SWAP_USED="$(($SWAP_USED/1000))"
+    fi
+    SWAP_USED="${bold}Swap Used:     ${norm}$SWAP_USED / $(($SWAP_TOTAL/1000)) mB"
     CPU_INFO="${bold}CPU:           ${norm}$(cat /proc/cpuinfo | grep 'model name' | head -n 1 | cut -c 14-)\n               cores: ${norm}$(cat /proc/cpuinfo | grep 'cpu MHz' | wc -l)\n               mhz: ${norm}$(cat /proc/cpuinfo | grep 'cpu MHz' | cut -c 12- | tr '\n' ' ')\n               load avg: ${norm}$(cat /proc/loadavg)"
     GPUS="${bold}GPU(s):${norm}        $(lspci -k | grep VGA | sed 's%VGA compatible controller:%%g')\n               memory: $(lspci -v | grep -A 9 'VGA' | grep '(64-bit, prefetchable)' | cut -f2 -d"=" | tr -d ']')\n               $(lspci -k | grep -A 2 VGA | cut -f2- -d" " | tail -n +3)"
     RESOLUTION="${bold}Resolution:    ${norm}$(xrandr | grep 'current' | cut -f2 -d"," | cut -f3- -d" ")"
