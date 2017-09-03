@@ -30,7 +30,7 @@ findpkgmanfunc () {
 infofunc () {
     findpkgmanfunc
     DATE="${bold}Date:          ${norm}$(date)"
-    VERSION_SIGNATURE="${bold}OS Version:    ${norm}$(cat /proc/version_signature 2>/dev/null || echo "Unknown!")"
+    VERSION_SIGNATURE="${bold}OS Version:    ${norm}$(cat /proc/version_signature 2>/dev/null || cat /proc/version | cut -f-3 -d" " || echo "Unknown!")"
     XDG_CURRENT_DESKTOP="${bold}Desktop:       ${norm}$XDG_CURRENT_DESKTOP"
     XDG_SESSION_TYPE="${bold}Session:       ${norm}$XDG_SESSION_TYPE"
     UPTIME="$(cat /proc/uptime | cut -f1 -d".")"
