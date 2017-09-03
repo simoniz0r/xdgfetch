@@ -4,53 +4,46 @@
 # Written by simonizor 5/27/2017 - http://www.simonizor.gq/linuxapps
 # License: GPLv2 Only
 
-bold=$(tput bold; tput setaf 7)
-norm=$(tput sgr0)
+bold="$(tput bold; tput setaf 7)"
+norm="$(tput sgr0)"
 
 programisinstalled () {
     type "$1" >/dev/null 2>&1
 }
 
 infofunc () {
+    DATE="${bold}Date:          ${norm}$(date)"
     VERSION_SIGNATURE="${bold}OS Version:    ${norm}$(cat /proc/version_signature)"
     UPTIME="$(cat /proc/uptime | cut -f1 -d".")"
     UPTIME="${bold}Uptime:        ${norm}$(expr $UPTIME / 60) minutes"
-    CPU_MODEL_NAME="${bold}CPU:           ${norm}$(cat /proc/cpuinfo | grep 'model name' | head -n 1 | cut -c 14-)"
-    CPU_CORES="${bold}CPU Cores:     ${norm}$(cat /proc/cpuinfo | grep 'cpu MHz' | wc -l)"
-    CPU_MHZ="${bold}CPU MHz:       ${norm}$(cat /proc/cpuinfo | grep 'cpu MHz' | cut -c 12- | tr '\n' ' ')"
-    CPU_CACHE="${bold}CPU Cache:     ${norm}$(cat /proc/cpuinfo | grep 'cache size' | head -n 1 | cut -c 14-)"
-    CPU_MODEL="${bold}CPU Model:     ${norm}$(cat /proc/cpuinfo | grep 'model' | head -n 1 | cut -c 10-)"
-    CPU_STEPPING="${bold}CPU Stepping:  ${norm}$(cat /proc/cpuinfo | grep 'stepping' | head -n 1 | cut -c 12-)"
-    LOADAVG="${bold}Load Average:  ${norm}$(cat /proc/loadavg)"
-    SOUND_CARDS="${bold}Sound Card(s):${norm}$(cat /proc/asound/cards | cut -f2 -d":" | sed 's:                      :               :g')"
-    GPUS="${bold}GPU(s):${norm}        $(lspci -k | grep VGA | cut -f2- -d" ")\n               $(lspci -k | grep -A 1 VGA | cut -f2- -d" " | tail -n +2)\n               $(lspci -k | grep -A 2 VGA | cut -f2- -d" " | tail -n +3)"
+    PROCESSES="${bold}Processes:     ${norm}$(ps -eo comm | wc -l)"
+    PACKAGES="${bold}Packages:      ${norm}$(dpkg --list | wc -l || rpm -qa | wc -l || pacman -Qe | wc -l || equery list | wc -l || xbps-query -l | wc -l || echo "Unknown distro")"
+    printf "${bold}System info:${norm}\n$DATE\n$VERSION_SIGNATURE\n$UPTIME\n$PROCESSES\n$PACKAGES\n"
+}
+
+hardwarefunc () {
     RAM_TOTAL="$(cat /proc/meminfo | grep MemTotal | cut -c 18- | tr -d 'kB')"
-    RAM_AVAILABLE="$(cat /proc/meminfo | grep MemAvailable | cut -c 18- | tr -d 'kB')"
     RAM_USED="$(cat /proc/meminfo | grep 'Active:' | cut -f2 -d":" | tr -d 'kB')"
     RAM_USED="${bold}RAM Used:      ${norm}$(($RAM_USED/1000)) / $(($RAM_TOTAL/1000)) mB"
     RAM_TOTAL="${bold}RAM Total:     ${norm}$(expr $RAM_TOTAL / 1000) mB"
-    if [[ "$RAM_AVAILABLE" < "1000" ]]; then
-        RAM_AVAILABLE="${bold}RAM Free:  ${norm}${RAM_AVAILABLE}kB"
-    else
-        RAM_AVAILABLE="${bold}RAM Free:      ${norm}$(expr $RAM_AVAILABLE / 1000) mB"
-    fi
     SWAP_TOTAL="$(cat /proc/meminfo | grep SwapTotal | cut -c 18- | tr -d 'kB')"
     SWAP_FREE="$(cat /proc/meminfo | grep SwapFree | cut -c 18- | tr -d 'kB')"
     SWAP_USED="$(($SWAP_TOTAL-$SWAP_FREE))"
     SWAP_USED="${bold}Swap Used:     ${norm}$(($SWAP_USED/1000)) / $(($SWAP_TOTAL/1000)) mB"
-    SWAP_TOTAL="${bold}Swap Total:    ${norm}$(expr $SWAP_TOTAL / 1000) mB"
-    if [[ "$SWAP_FREE" < "1000" ]]; then
-        SWAP_FREE="${bold}Swap Free:  ${norm}${SWAP_FREE}kB"
-    else
-        SWAP_FREE="${bold}Swap Free:     ${norm}$(expr $SWAP_FREE / 1000) mB"
-    fi
-    printf "${bold}System info:${norm}\n$VERSION_SIGNATURE\n$UPTIME\n$CPU_MODEL_NAME\n$CPU_CORES\n$CPU_MHZ\n$LOADAVG\n$RAM_USED\n$SWAP_USED\n$SOUND_CARDS\n$GPUS\n"
+    CPU_INFO="${bold}CPU:           ${norm}$(cat /proc/cpuinfo | grep 'model name' | head -n 1 | cut -c 14-)\n               cores: ${norm}$(cat /proc/cpuinfo | grep 'cpu MHz' | wc -l)\n               mhz: ${norm}$(cat /proc/cpuinfo | grep 'cpu MHz' | cut -c 12- | tr '\n' ' ')\n               load avg: ${norm}$(cat /proc/loadavg)"
+    GPUS="${bold}GPU(s):${norm}        $(lspci -k | grep VGA | sed 's%VGA compatible controller:%%g')\n               memory: $(lspci -v | grep -A 9 'VGA' | grep '(64-bit, prefetchable)' | cut -f2 -d"=" | tr -d ']')\n               $(lspci -k | grep -A 2 VGA | cut -f2- -d" " | tail -n +3)"
+    RESOLUTION="${bold}Resolution:    ${norm}$(xrandr | grep 'current' | cut -f2 -d"," | cut -f3- -d" ")"
+    SOUND="${bold}Sound:         ${norm}$(lspci | grep 'Audio device:' | sed 's%Audio device:%%g')"
+    ETHERNET="${bold}Ethernet:      ${norm}$(lspci | grep 'Ethernet controller:' | sed 's%Ethernet controller:%%g' || echo "None")"
+    WIFI="${bold}WiFi:          ${norm}$(lspci | grep 'Network controller:' | sed 's%Network controller:%%g' || echo "None")"
+    STORAGE="${bold}Storage:${norm}       $(df -hT / | tail -n +2 | cut -f-12 -d" " | sed 's:/dev/::g' | sed 's:      :  :g')"
+    printf "${bold}Hardware:${norm}\n$RAM_USED\n$SWAP_USED\n$CPU_INFO\n$GPUS\n$RESOLUTION\n$SOUND\n$ETHERNET\n$WIFI\n$STORAGE\n"
 }
 
 sessionfunc () {
     XDG_CURRENT_DESKTOP="${bold}Desktop:       ${norm}$XDG_CURRENT_DESKTOP"
     XDG_SESSION_TYPE="${bold}Type:          ${norm}$XDG_SESSION_TYPE"
-    printf "${bold}Current xdg session:${norm}\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n"
+    printf "${bold}Current session:${norm}\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n"
 }
 
 appfunc () {
@@ -226,68 +219,14 @@ directoriesfunc () {
         XDG_TEMPLATES_DIR="${bold}Templates:     ${norm}$XDG_TEMPLATES_DIR"
         XDG_VIDEOS_DIR="${bold}Videos:        ${norm}$XDG_VIDEOS_DIR"
     fi
-    printf "${bold}Default xdg directories:${norm}\n$XDG_DESKTOP_DIR\n$XDG_DOCUMENTS_DIR\n$XDG_DOWNLOAD_DIR\n$XDG_MUSIC_DIR\n$XDG_PICTURES_DIR\n$XDG_PUBLICSHARE_DIR\n$XDG_TEMPLATES_DIR\n$XDG_VIDEOS_DIR\n"
-}
-
-verbosefunc () {
-    VERSION_SIGNATURE="${bold}OS Version:               ${norm}$(cat /proc/version_signature)"
-    UPTIME="${bold}Uptime:                   ${norm}$(cat /proc/uptime)"
-    CPU_MODEL_NAME="${bold}CPU:                      ${norm}$(cat /proc/cpuinfo | grep 'model name' | head -n 1 | cut -c 14-)"
-    CPU_CORES="${bold}CPU Cores:                ${norm}$(cat /proc/cpuinfo | grep 'cpu MHz' | wc -l)"
-    CPU_MHZ="${bold}CPU MHz:                  ${norm}$(cat /proc/cpuinfo | grep 'cpu MHz' | cut -c 12- | tr '\n' ' ')"
-    CPU_CACHE="${bold}CPU Cache:                ${norm}$(cat /proc/cpuinfo | grep 'cache size' | head -n 1 | cut -c 14-)"
-    CPU_MODEL="${bold}CPU Model:                ${norm}$(cat /proc/cpuinfo | grep 'model' | head -n 1 | cut -c 10-)"
-    CPU_STEPPING="${bold}CPU Stepping:             ${norm}$(cat /proc/cpuinfo | grep 'stepping' | head -n 1 | cut -c 12-)"
-    LOADAVG="${bold}Load Average:             ${norm}$(cat /proc/loadavg)"
-    SOUND_CARDS="${bold}Sound Card(s):\n${norm}$(cat /proc/asound/cards | cut -c 2-)"
-    GPUS="${bold}GPU(s):\n${norm}$(lspci -k | grep -A 3 VGA)"
-    RAM_TOTAL="${bold}RAM Total:                ${norm}$(cat /proc/meminfo | grep MemTotal | cut -c 18-)"
-    RAM_USED="${bold}RAM Used:       ${norm}$(cat /proc/meminfo | grep 'Active:' | cut -f2 -d":")"
-    RAM_AVAILABLE="${bold}RAM Available:            ${norm}$(cat /proc/meminfo | grep MemAvailable | cut -c 18-)"
-    SWAP_TOTAL="${bold}Swap Total:               ${norm}$(cat /proc/meminfo | grep SwapTotal | cut -c 18-)"
-    SWAP_USED="${bold}Swap Used:              ${norm}$(cat /proc/meminfo | grep SwapCached | cut -c 22-)"
-    SWAP_FREE="${bold}Swap Free:                ${norm}$(cat /proc/meminfo | grep SwapFree | cut -c 18-)"
-    XDG_CURRENT_DESKTOP="${bold}XDG_CURRENT_DESKTOP:      ${norm}$XDG_CURRENT_DESKTOP"
-    XDG_SESSION_TYPE="${bold}XDG_SESSION_TYPE:         ${norm}$XDG_SESSION_TYPE"
-    SHELL="${bold}Shell:                    ${norm}$SHELL"
-    XDGFILEMANAGER="$(xdg-mime query default inode/directory)" || XDGFILEMANAGER="Not set!        "
-    XDGFILEMANAGER="${bold}inode/directory:          ${norm}$XDGFILEMANAGER"
-    XDGBROWSER="$(xdg-settings get default-web-browser)" || XDGBROWSER="Not set!        "
-    XDGBROWSER="${bold}default-web-browser:      ${norm}$XDGBROWSER"
-    XDGMAILTO="$(xdg-mime query default x-scheme-handler/mailto)" || XDGMAILTO="Not set!        "
-    XDGMAILTO="${bold}x-scheme-handler/mailto:  ${norm}$XDGMAILTO"
-    XDGAUDIO="$(xdg-mime query default audio/flac)" || XDGAUDIO="Not set!        "
-    XDGAUDIO="${bold}audio/flac:               ${norm}$XDGAUDIO"
-    XDGVIDEO="$(xdg-mime query default video/mp4)" || XDGVIDEO="Not set!        "
-    XDGVIDEO="${bold}video/mp4:                ${norm}$XDGVIDEO"
-    XDGIMAGE="$(xdg-mime query default image/png)" || XDGIMAGE="Not set!        "
-    XDGIMAGE="${bold}image/png:                ${norm}$XDGIMAGE"
-    XDGTEXT="$(xdg-mime query default text/plain)" || XDGTEXT="Not set!        "
-    XDGTEXT="${bold}text/plain:               ${norm}$XDGTEXT"
-    XDGOFFICE="$(xdg-mime query default application/vnd.ms-word)" || XDGOFFICE="Not set!        "
-    XDGOFFICE="${bold}application/vnd.ms-word:  ${norm}$XDGOFFICE"
-    XDGARCHIVE="$(xdg-mime query default application/x-tar)" || XDGARCHIVE="Not set!        "
-    XDGARCHIVE="${bold}application/x-tar:        ${norm}$XDGARCHIVE"
-    XDGPGP="$(xdg-mime query default application/pgp-keys)" || XDGPGP="Not set!        "
-    XDGPGP="${bold}application/pgp-keys:     ${norm}$XDGPGP"
-    if [ -f ~/.config/user-dirs.dirs ]; then
-        . ~/.config/user-dirs.dirs
-        XDG_DESKTOP_DIR="${bold}XDG_DESKTOP_DIR:         ${norm}$XDG_DESKTOP_DIR"
-        XDG_DOCUMENTS_DIR="${bold}XDG_DOCUMENTS_DIR:       ${norm}$XDG_DOCUMENTS_DIR"
-        XDG_DOWNLOAD_DIR="${bold}XDG_DOWNLOAD_DIR:        ${norm}$XDG_DOWNLOAD_DIR"
-        XDG_MUSIC_DIR="${bold}XDG_MUSIC_DIR:           ${norm}$XDG_MUSIC_DIR"
-        XDG_PICTURES_DIR="${bold}XDG_PICTURES_DIR:        ${norm}$XDG_PICTURES_DIR"
-        XDG_PUBLICSHARE_DIR="${bold}XDG_PUBLICSHARE_DIR:     ${norm}$XDG_PUBLICSHARE_DIR"
-        XDG_TEMPLATES_DIR="${bold}XDG_TEMPLATES_DIR:       ${norm}$XDG_TEMPLATES_DIR"
-        XDG_VIDEOS_DIR="${bold}XDG_VIDEOS_DIR:          ${norm}$XDG_VIDEOS_DIR"
-    fi
-    printf "${bold}System info:${norm}\n$VERSION_SIGNATURE\n$UPTIME\n$CPU_MODEL_NAME\n$CPU_CORES\n$CPU_MHZ\n$CPU_CACHE\n$CPU_MODEL\n$CPU_STEPPING\n$LOADAVG\n$SOUND_CARDS\n$GPUS\n$RAM_TOTAL\n$RAM_USED\n$RAM_AVAILABLE\n$SWAP_TOTAL\n$SWAP_USED\n$SWAP_FREE\n\n${bold}Current xdg session:${norm}\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n\n${bold}Applications:${norm}\n$SHELL\n$XDGFILEMANAGER\n$XDGBROWSER\n$XDGMAILTO\n$XDGAUDIO\n$XDGVIDEO\n$XDGIMAGE\n$XDGTEXT\n$XDGOFFICE\n$XDGARCHIVE\n$XDGPGP\n\n${bold}Default xdg directories:${norm}\n$XDG_DESKTOP_DIR\n$XDG_DOCUMENTS_DIR\n$XDG_DOWNLOAD_DIR\n$XDG_MUSIC_DIR\n$XDG_PICTURES_DIR\n$XDG_PUBLICSHARE_DIR\n$XDG_TEMPLATES_DIR\n$XDG_VIDEOS_DIR\n"
+    printf "${bold}Default directories:${norm}\n$XDG_DESKTOP_DIR\n$XDG_DOCUMENTS_DIR\n$XDG_DOWNLOAD_DIR\n$XDG_MUSIC_DIR\n$XDG_PICTURES_DIR\n$XDG_PUBLICSHARE_DIR\n$XDG_TEMPLATES_DIR\n$XDG_VIDEOS_DIR\n"
 }
 
 xdgfetchmain () {
     case $1 in
-        -h*|--h*)
-            printf "${bold}xdgfetch usage${norm}:\n${bold}xdgfetch${norm}:           Shows current system info, xdg session, default applications, and default directories\n${bold}xdgfetch -h${norm}:        Shows this help output\n${bold}xdgfetch -c${norm}:        Changes the color of bold text.  Works with any valid tput color.\n  Ex: 'xdgfetch -c 1', 'xdgfetch -c 1 -x'\n${bold}xdgfetch -i${norm}:        Shows system info from '/proc/'\n${bold}xdgfetch -s${norm}:        Shows current xdg session info\n${bold}xdgfetch -a${norm}:        Shows default xdg applications\n${bold}xdgfetch -d${norm}:        Shows default xdg directories\n${bold}xdgfetch -v${norm}:        Shows output in xdg syntax\n"
+        --help)
+            printf "${bold}xdgfetch usage${norm}:\n${bold}xdgfetch${norm}:           Shows current system info, xdg session, default applications, and default directories\n${bold}xdgfetch --help${norm}:        Shows this help output\n${bold}xdgfetch -c${norm}:        Changes the color of bold text.  Works with any valid tput color.\n  Ex: 'xdgfetch -c 1', 'xdgfetch -c 1 -x'\n${bold}xdgfetch -i${norm}:        Shows system info\n${bold}xdgfetch -h${norm}:        Shows hardware info\n${bold}xdgfetch -s${norm}:        Shows current session info\n${bold}xdgfetch -a${norm}:        Shows default applications\n${bold}xdgfetch -d${norm}:        Shows default directories\n"
+            exit 0
             ;;
         -c*|--c*)
             case $2 in
@@ -305,29 +244,36 @@ xdgfetchmain () {
             echo
             infofunc
             echo
+            exit 0
+            ;;
+        -h*|--h*)
+            echo
+            hardwarefunc
+            echo
+            exit 0
             ;;
         -s*|--s*)
             echo
             sessionfunc
             echo
+            exit 0
             ;;
         -a*|--a*)
             echo
             appfunc
             echo
+            exit 0
             ;;
         -d*|--d*)
             echo
             directoriesfunc
             echo
-            ;;
-        -v*|--verbose)
-            echo
-            verbosefunc
-            echo
+            exit 0
             ;;
         *)
             infofunc
+            echo
+            hardwarefunc
             echo
             sessionfunc
             echo
@@ -335,6 +281,8 @@ xdgfetchmain () {
             echo
             directoriesfunc
             echo
+            exit 0
+            ;;
     esac
 }
 
