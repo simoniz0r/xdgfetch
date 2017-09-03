@@ -17,7 +17,7 @@ findpkgmanfunc () {
         type rpm >/dev/null 2>&1 && PKGMAN="$(rpm -qa | wc -l)" || PKGMAN=""
     fi
     if [ -z "$PKGMAN" ]; then
-        type pacman >/dev/null 2>&1 && PKGMAN="$(pacman -Qe | wc -l)" || PKGMAN=""
+        type pacman >/dev/null 2>&1 && PKGMAN="$(pacman -Qq --color never | wc -l)" || PKGMAN=""
     fi
     if [ -z "$PKGMAN" ]; then
         type equery >/dev/null 2>&1 && PKGMAN="$(equery list | wc -l)" || PKGMAN=""
@@ -29,24 +29,31 @@ findpkgmanfunc () {
 
 infofunc () {
     findpkgmanfunc
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+    fi
     DATE="${bold}Date:          ${norm}$(date)"
     VERSION_SIGNATURE="${bold}OS Version:    ${norm}$(cat /proc/version_signature 2>/dev/null || cat /proc/version | cut -f-3 -d" " || echo "Unknown!")"
+    if [ -z "$PRETTY_NAME" ]; then
+        PRETTY_NAME="$NAME"
+    fi
+    PRETTY_NAME="${bold}Name:          ${norm}$PRETTY_NAME"
     XDG_CURRENT_DESKTOP="${bold}Desktop:       ${norm}$XDG_CURRENT_DESKTOP"
     XDG_SESSION_TYPE="${bold}Session:       ${norm}$XDG_SESSION_TYPE"
     UPTIME="$(cat /proc/uptime | cut -f1 -d".")"
     UPTIME="${bold}Uptime:        ${norm}$(expr $UPTIME / 60) minutes"
     PROCESSES="${bold}Processes:     ${norm}$(ps -eo comm | wc -l)"
     PACKAGES="${bold}Packages:      ${norm}$PKGMAN"
-    printf "${bold}System info:${norm}\n$DATE\n$VERSION_SIGNATURE\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n$UPTIME\n$PROCESSES\n$PACKAGES\n"
+    printf "${bold}System info:${norm}\n$DATE\n$VERSION_SIGNATURE\n$PRETTY_NAME\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n$UPTIME\n$PROCESSES\n$PACKAGES\n"
 }
 
 hardwarefunc () {
-    RAM_TOTAL="$(cat /proc/meminfo | grep MemTotal | cut -c 18- | tr -d 'kB')"
-    RAM_USED="$(cat /proc/meminfo | grep 'Active:' | cut -f2 -d":" | tr -d 'kB')"
+    RAM_TOTAL="$(cat /proc/meminfo | grep MemTotal | cut -f2- -d" " | tr -d 'kB[:space:]')"
+    RAM_USED="$(cat /proc/meminfo | grep 'Active:' | cut -f2- -d" " | tr -d 'kB[:space:]')"
     RAM_USED="${bold}RAM Used:      ${norm}$(($RAM_USED/1000)) / $(($RAM_TOTAL/1000)) mB"
     RAM_TOTAL="${bold}RAM Total:     ${norm}$(expr $RAM_TOTAL / 1000) mB"
-    SWAP_TOTAL="$(cat /proc/meminfo | grep SwapTotal | cut -c 18- | tr -d 'kB')"
-    SWAP_FREE="$(cat /proc/meminfo | grep SwapFree | cut -c 18- | tr -d 'kB')"
+    SWAP_TOTAL="$(cat /proc/meminfo | grep SwapTotal | cut -f2- -d" " | tr -d 'kB[:space:]')"
+    SWAP_FREE="$(cat /proc/meminfo | grep SwapFree | cut -f2- -d" " | tr -d 'kB[:space:]')"
     SWAP_USED="$(($SWAP_TOTAL-$SWAP_FREE))"
     SWAP_USED="${bold}Swap Used:     ${norm}$(($SWAP_USED/1000)) / $(($SWAP_TOTAL/1000)) mB"
     CPU_INFO="${bold}CPU:           ${norm}$(cat /proc/cpuinfo | grep 'model name' | head -n 1 | cut -c 14-)\n               cores: ${norm}$(cat /proc/cpuinfo | grep 'cpu MHz' | wc -l)\n               mhz: ${norm}$(cat /proc/cpuinfo | grep 'cpu MHz' | cut -c 12- | tr '\n' ' ')\n               load avg: ${norm}$(cat /proc/loadavg)"
