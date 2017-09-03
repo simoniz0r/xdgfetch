@@ -283,60 +283,30 @@ if [ -z "$1" ]; then
     directoriesfunc
     echo
 else
-    case $1 in
-        *-c*)
-            if [ -z "$2" ]; then
-                COLOR="$(echo "$1" |cut -f2 -d"=")"
-                case $COLOR in
-                    0*|1*|2*|3*|4*|5*|6*|7*|8*|9*)
-                        bold=$(tput bold; tput setaf $COLOR)
-                        infofunc
-                        echo
-                        hardwarefunc
-                        echo
-                        appfunc
-                        echo
-                        directoriesfunc
-                        echo
-                        exit 0
-                        ;;
-                    *)
-                        xdgfetchmain "--help"
-                        ;;
-                esac
-            else
-                if echo "$@" | grep -q '='; then
-                    COLOR="$(echo "$@" |cut -f2 -d"=" | cut -f1 -d" ")"
-                    case $COLOR in
-                        0*|1*|2*|3*|4*|5*|6*|7*|8*|9*)
-                            bold=$(tput bold; tput setaf $COLOR)
-                            ;;
-                        *)
-                            bold=$(tput bold; tput setaf 7)
-                            ;;
-                    esac
-                fi
-                for arg in $@; do
-                    xdgfetchmain "$arg"
-                done
-            fi
-            ;;
-        *)
-            if echo "$@" | grep -q '='; then
-                COLOR="$(echo "$@" |cut -f2 -d"=" | cut -f1 -d" ")"
-                case $COLOR in
-                    0*|1*|2*|3*|4*|5*|6*|7*|8*|9*)
-                        bold=$(tput bold; tput setaf $COLOR)
-                        ;;
-                    *)
-                        bold=$(tput bold; tput setaf 7)
-                        ;;
-                esac
-            fi
-            for arg in $@; do
-                xdgfetchmain "$arg"
-            done
-            ;;
-    esac
+    if echo "$@" | grep -q '='; then
+        COLOR="$(echo "$@" |cut -f2 -d"=" | cut -f1 -d" ")"
+        case $COLOR in
+            0*|1*|2*|3*|4*|5*|6*|7*|8*|9*)
+                bold=$(tput bold; tput setaf $COLOR)
+                ;;
+            *)
+                bold=$(tput bold; tput setaf 7)
+                ;;
+        esac
+        if [ -z "$2" ]; then
+            infofunc
+            echo
+            hardwarefunc
+            echo
+            appfunc
+            echo
+            directoriesfunc
+            echo
+            exit 0
+        fi
+    fi
+    for arg in $@; do
+        xdgfetchmain "$arg"
+    done
 fi
 exit 0
