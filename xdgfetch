@@ -292,6 +292,7 @@ else
                         echo
                         directoriesfunc
                         echo
+                        exit 0
                         ;;
                     *)
                         echo "Invalid color choice."
