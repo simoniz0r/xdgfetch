@@ -18,7 +18,9 @@ infofunc () {
     UPTIME="${bold}Uptime:        ${norm}$(expr $UPTIME / 60) minutes"
     PROCESSES="${bold}Processes:     ${norm}$(ps -eo comm | wc -l)"
     PACKAGES="${bold}Packages:      ${norm}$(dpkg --list | wc -l || rpm -qa | wc -l || pacman -Qe | wc -l || equery list | wc -l || xbps-query -l | wc -l || echo "Unknown distro")"
-    printf "${bold}System info:${norm}\n$DATE\n$VERSION_SIGNATURE\n$UPTIME\n$PROCESSES\n$PACKAGES\n"
+    XDG_CURRENT_DESKTOP="${bold}Desktop:       ${norm}$XDG_CURRENT_DESKTOP"
+    XDG_SESSION_TYPE="${bold}Session:       ${norm}$XDG_SESSION_TYPE"
+    printf "${bold}System info:${norm}\n$DATE\n$VERSION_SIGNATURE\n$UPTIME\n$PROCESSES\n$PACKAGES\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n"
 }
 
 hardwarefunc () {
@@ -38,12 +40,6 @@ hardwarefunc () {
     WIFI="${bold}WiFi:          ${norm}$(lspci | grep 'Network controller:' | sed 's%Network controller:%%g' || echo "None")"
     STORAGE="${bold}Storage:${norm}       $(df -hT / | tail -n +2 | cut -f-12 -d" " | sed 's:/dev/::g' | sed 's:      :  :g')"
     printf "${bold}Hardware:${norm}\n$RAM_USED\n$SWAP_USED\n$CPU_INFO\n$GPUS\n$RESOLUTION\n$SOUND\n$ETHERNET\n$WIFI\n$STORAGE\n"
-}
-
-sessionfunc () {
-    XDG_CURRENT_DESKTOP="${bold}Desktop:       ${norm}$XDG_CURRENT_DESKTOP"
-    XDG_SESSION_TYPE="${bold}Type:          ${norm}$XDG_SESSION_TYPE"
-    printf "${bold}Current session:${norm}\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n"
 }
 
 appfunc () {
@@ -225,7 +221,7 @@ directoriesfunc () {
 xdgfetchmain () {
     case $1 in
         --help)
-            printf "${bold}xdgfetch usage${norm}:\n${bold}xdgfetch${norm}:           Shows system, hardware, session, default program, and default directory info\n${bold}xdgfetch -c=n${norm}:      Changes the color of bold text; works with any valid tput color\n                    Ex: 'xdgfetch -c=1', 'xdgfetch -c=1 -i'\n${bold}xdgfetch -i${norm}:        Shows system info\n${bold}xdgfetch -h${norm}:        Shows hardware info\n${bold}xdgfetch -s${norm}:        Shows current session info\n${bold}xdgfetch -a${norm}:        Shows default applications\n${bold}xdgfetch -d${norm}:        Shows default directories\n${bold}xdgfetch --help${norm}:    Shows this help output\n"
+            printf "${bold}xdgfetch usage${norm}:\n${bold}xdgfetch${norm}:           Shows system, hardware, session, default program, and default directory info\n${bold}xdgfetch -c=n${norm}:      Changes the color of bold text; works with any valid tput color\n                    Ex: 'xdgfetch -c=1', 'xdgfetch -c=1 -i'\n${bold}xdgfetch -i${norm}:        Shows system info\n${bold}xdgfetch -h${norm}:        Shows hardware info\n${bold}xdgfetch -a${norm}:        Shows default applications\n${bold}xdgfetch -d${norm}:        Shows default directories\n${bold}xdgfetch --help${norm}:    Shows this help output\n"
             ;;
         -c*|--c*)
             case $COLOR in
@@ -246,10 +242,6 @@ xdgfetchmain () {
             hardwarefunc
             echo
             ;;
-        -s*|--s*)
-            sessionfunc
-            echo
-            ;;
         -a*|--a*)
             appfunc
             echo
@@ -268,8 +260,6 @@ if [ -z "$1" ]; then
     echo
     hardwarefunc
     echo
-    sessionfunc
-    echo
     appfunc
     echo
     directoriesfunc
@@ -285,8 +275,6 @@ else
                         infofunc
                         echo
                         hardwarefunc
-                        echo
-                        sessionfunc
                         echo
                         appfunc
                         echo
