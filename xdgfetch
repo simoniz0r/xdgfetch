@@ -40,8 +40,14 @@ infofunc () {
     PRETTY_NAME="${bold}Name:          ${norm}$PRETTY_NAME"
     XDG_CURRENT_DESKTOP="${bold}Desktop:       ${norm}$XDG_CURRENT_DESKTOP"
     XDG_SESSION_TYPE="${bold}Session:       ${norm}$XDG_SESSION_TYPE"
-    UPTIME="$(cat /proc/uptime | cut -f1 -d".")"
-    UPTIME="${bold}Uptime:        ${norm}$(expr $UPTIME / 60) minutes"
+    case $(uptime | cut -f2 -d",") in
+        *user)
+            UPTIME="${bold}Uptime:        ${norm}$(uptime | cut -f1 -d"," | cut -f4- -d" ")"
+            ;;
+        *)
+            UPTIME="${bold}Uptime:        ${norm}$(uptime | cut -f1 -d"," | cut -f4- -d" "), $(uptime | cut -f2 -d"," | tr -d '[:space:]')"
+            ;;
+    esac
     PROCESSES="${bold}Processes:     ${norm}$(ps -eo comm | wc -l)"
     PACKAGES="${bold}Packages:      ${norm}$PKGMAN"
     printf "${bold}System info:${norm}\n$DATE\n$VERSION_SIGNATURE\n$PRETTY_NAME\n$XDG_CURRENT_DESKTOP\n$XDG_SESSION_TYPE\n$UPTIME\n$PROCESSES\n$PACKAGES\n"
