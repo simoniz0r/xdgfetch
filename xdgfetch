@@ -42,7 +42,7 @@ infofunc () {
     XDG_SESSION_TYPE="${bold}Session:       ${norm}$XDG_SESSION_TYPE"
     case $(uptime | cut -f2 -d",") in
         *user)
-            UPTIME="${bold}Uptime:        ${norm}$(uptime | cut -f1 -d"," | cut -f4- -d" ")"
+            UPTIME="${bold}Uptime:        ${norm}$(uptime | cut -f1 -d"," | cut -f4- -d" " | tr -d '[:space:]')"
             ;;
         *)
             UPTIME="${bold}Uptime:        ${norm}$(uptime | cut -f1 -d"," | cut -f4- -d" "), $(uptime | cut -f2 -d"," | tr -d '[:space:]')"
