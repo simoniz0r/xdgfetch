@@ -12,7 +12,7 @@ programisinstalled () {
 }
 
 findpkgmanfunc () {
-    type dpkg >/dev/null 2>&1 && PKGMAN="$(dpkg --list | wc -l)" || PKGMAN=""
+    type dpkg >/dev/null 2>&1 && PKGMAN="$(dpkg --get-selections | grep -v deinstall | wc -l)" || PKGMAN=""
     if [ -z "$PKGMAN" ]; then
         type rpm >/dev/null 2>&1 && PKGMAN="$(rpm -qa | wc -l)" || PKGMAN=""
     fi
